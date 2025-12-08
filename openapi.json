@@ -1,0 +1,132 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "E-commerce API",
+        "version": "1.0.0",
+        "description": "This is an e-commerce API spec for a storefront. It includes authentication, product browsing, cart, and checkout operations. Auth is token-based. Explore, test, and mock this API freely."
+    },
+    "servers": [
+        {
+            "url": "https://api.demo-ecommerce.com/v1",
+            "description": "Production environment"
+        },
+        {
+            "url": "https://api.dev.demo-ecommerce.com/v1",
+            "description": "Development environment"
+        }
+    ],
+    "paths": {
+        "/products": {
+            "get": {
+                "summary": "List all products",
+                "operationId": "listProducts",
+                "responses": {
+                    "200": {
+                        "description": "A list of products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": [
+                                            {
+                                                "id": "eda5cbc1-a615-4da5-ae73-4a33a9acfb6a",
+                                                "name": "Wireless Ergonomic Mouse",
+                                                "price": 45.99,
+                                                "stock": 150,
+                                                "category": "Electronics"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/{productId}": {
+            "get": {
+                "summary": "Get a product by ID",
+                "operationId": "getProductById",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The ID of the product to retrieve",
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "Product": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "price",
+                    "stock",
+                    "category"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "example": "eda5cbc1-a615-4da5-ae73-4a33a9acfb6a"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Wireless Ergonomic Mouse"
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 45.99
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "category": {
+                        "type": "string",
+                        "example": "Electronics"
+                    }
+                }
+            }
+        }
+    }
+}
