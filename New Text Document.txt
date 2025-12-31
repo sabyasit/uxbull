@@ -1,0 +1,128 @@
+import { Directive, ElementRef, HostListener, forwardRef } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
+@Directive({
+    selector: '[contentEditable][ngModel]',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => ContentEditableDirective),
+            multi: true
+        }
+    ]
+})
+export class ContentEditableDirective implements ControlValueAccessor {
+    private onChange: (value: string) => void = () => { };
+    private onTouched: () => void = () => { };
+
+    constructor(private elementRef: ElementRef) { }
+
+    @HostListener('input', ['$event'])
+    onInput(event: Event): void {
+        const value = (event.target as HTMLElement).innerText;
+        this.onChange(value);
+    }
+
+    @HostListener('blur')
+    onBlur(): void {
+        this.onTouched();
+    }
+
+    writeValue(value: string): void {
+        this.elementRef.nativeElement.innerText = value || '';
+    }
+
+    registerOnChange(fn: (value: string) => void): void {
+        this.onChange = fn;
+    }
+
+    registerOnTouched(fn: () => void): void {
+        this.onTouched = fn;
+    }
+
+    setDisabledState(isDisabled: boolean): void {
+        this.elementRef.nativeElement.contentEditable = !isDisabled;
+    }
+}
+
+
+<div contentEditable="true" [(ngModel)]="data.a"></div>
+<div>{{data.a}}</div>
+<div contentEditable="true" [(ngModel)]="data.b.c"></div>
+<div>{{data.b.c}}</div>
+
+<div class="draggable" cdkDropList (cdkDropListDropped)="onDrop($event)">
+  <div *ngFor="let item of a" cdkDrag style="border: 1px solid #ccc;">
+    <mat-icon cdkDragHandle class="drag-handle">drag_indicator</mat-icon>
+    {{item}}
+  </div>
+
+</div>
+
+  onDrop(event: CdkDragDrop<string[]>): void {
+    moveItemInArray(this.a, event.previousIndex, event.currentIndex);
+  }
+
+
+.draggable {
+    /* padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin: 20px; */
+}
+
+.draggable .cdk-drag {
+    /* padding: 12px 16px;
+    margin: 8px 0;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px; */
+    transition: all 0.3s ease;
+    user-select: none;
+    cursor: default;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.draggable .drag-handle {
+    cursor: move;
+    color: #666;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    transition: color 0.2s ease;
+}
+
+.draggable .drag-handle:hover {
+    color: #333;
+}
+
+.draggable .cdk-drag:hover {
+    /* background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); */
+}
+
+/* Dragging state - Hidden */
+.draggable .cdk-drag-preview {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* Placeholder where item will be dropped */
+.draggable .cdk-drag-placeholder {
+    opacity: 0;
+    border: 2px dashed #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+/* Animating while dragging */
+.draggable .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Drop list while dragging */
+.draggable.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
