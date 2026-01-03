@@ -125,4 +125,157 @@ export class ContentEditableDirective implements ControlValueAccessor {
 /* Drop list while dragging */
 .draggable.cdk-drop-list-dragging .cdk-drag:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+
 }
+
+{
+  "isMatch": boolean,
+  "overallScore": number,
+  "confidence": string,
+  "summary": string,
+  "details": {
+    "skillsMatch": {
+      "score": number,
+      "matchedSkills": string[],
+      "missingSkills": string[],
+      "additionalSkills": string[]
+    },
+    "experienceMatch": {
+      "score": number,
+      "yearsRequired": number,
+      "yearsCandidate": number,
+      "relevantExperience": string[]
+    }
+  },
+  "strengths": string[],
+  "gaps": string[],
+  "recommendations": string[],
+  "reasoning": string
+}
+
+import OpenAI from 'openai';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+async function matchCandidateToJob(resume, jobRequirement) {
+  const prompt = `You are an expert HR recruiter and talent acquisition specialist. Your task is to analyze a candidate's resume against job requirements and determine if they are a suitable match.
+
+RESUME:
+${resume}
+
+JOB REQUIREMENTS:
+${jobRequirement}
+
+ANALYSIS INSTRUCTIONS:
+1. Carefully analyze the candidate's skills, experience, and qualifications from the resume
+2. Compare them against the job requirements
+3. Evaluate skills match (technical skills, soft skills, tools, technologies)
+4. Evaluate experience match (years of experience, relevance, industry background)
+5. Identify strengths and gaps
+6. Provide actionable recommendations
+
+RESPONSE FORMAT:
+You must respond ONLY with a valid JSON object (no markdown, no code blocks, no additional text) in this exact structure:
+
+{
+  "isMatch": boolean (true if candidate is suitable, false otherwise),
+  "overallScore": number (0-100, overall match percentage),
+  "confidence": string ("high", "medium", or "low"),
+  "summary": string (2-3 sentence summary of the decision),
+  "details": {
+    "skillsMatch": {
+      "score": number (0-100),
+      "matchedSkills": array of strings (skills candidate has that match requirements),
+      "missingSkills": array of strings (required skills candidate lacks),
+      "additionalSkills": array of strings (extra skills candidate has beyond requirements)
+    },
+    "experienceMatch": {
+      "score": number (0-100),
+      "yearsRequired": number (years of experience required),
+      "yearsCandidate": number (years candidate has),
+      "relevantExperience": array of strings (relevant work experiences)
+    }
+  },
+  "strengths": array of strings (3-5 key strengths for this role),
+  "gaps": array of strings (areas where candidate falls short),
+  "recommendations": array of strings (2-4 actionable next steps),
+  "reasoning": string (detailed explanation of the matching decision)
+}
+
+SCORING GUIDELINES:
+- overallScore 80-100: Excellent match, highly recommended
+- overallScore 60-79: Good match, recommend interview
+- overallScore 40-59: Moderate match, consider with reservations
+- overallScore 0-39: Poor match, not recommended
+
+Be objective, fair, and thorough in your analysis.`;
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // or "gpt-4-turbo", "gpt-3.5-turbo"
+      messages: [
+        {
+          role: "system",
+          content: "You are an expert HR recruiter specializing in candidate evaluation. You provide accurate, fair, and detailed assessments of candidate-job fit. Always respond with valid JSON only."
+        },
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.3, // Lower temperature for more consistent results
+      response_format: { type: "json_object" } // Ensures JSON response
+    });
+
+    const result = JSON.parse(response.choices[0].message.content);
+    return result;
+
+  } catch (error) {
+    console.error('Error calling OpenAI API:', error);
+    throw error;
+  }
+}
+
+// Example usage:
+const resume = `
+John Doe
+Software Engineer
+Email: john@example.com
+
+EXPERIENCE:
+- Senior Software Engineer at Tech Corp (2020-2024)
+  * Led development of microservices architecture
+  * Technologies: Node.js, React, PostgreSQL, AWS
+  * Managed team of 3 developers
+
+- Software Engineer at StartupXYZ (2018-2020)
+  * Built REST APIs and web applications
+  * Technologies: Python, Django, MySQL
+
+SKILLS:
+JavaScript, TypeScript, Node.js, React, Python, AWS, Docker, PostgreSQL, MongoDB
+`;
+
+const jobRequirement = `
+Senior Full Stack Developer
+
+REQUIREMENTS:
+- 5+ years of software development experience
+- Strong proficiency in Node.js and React
+- Experience with cloud platforms (AWS/Azure)
+- Database design experience (SQL and NoSQL)
+- Team leadership experience preferred
+- Microservices architecture knowledge
+
+NICE TO HAVE:
+- Python experience
+- Docker/Kubernetes
+- CI/CD pipeline setup
+`;
+
+// Call the function
+matchCandidateToJob(resume, jobRequirement)
+  .then(result => console.log(JSON.stringify(result, null, 2)))
+  .catch(error => console.error(error));
