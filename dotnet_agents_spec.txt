@@ -1,0 +1,2098 @@
+# .NET Modernization Multi-Agent System
+## Detailed Agent Specifications
+
+---
+
+## **CORE ANALYSIS AGENTS (6)**
+
+### **1. CodebaseScanner**
+
+**Purpose**: Scans the entire codebase and creates a comprehensive inventory of all files, projects, and dependencies.
+
+**Inputs**:
+- Root directory path
+- File extension filters (.cs, .csproj, .sln, .config)
+- Exclusion patterns (bin/, obj/, node_modules/)
+
+**Outputs**:
+- Complete file inventory (JSON)
+- Project structure hierarchy
+- File metadata (LOC, last modified, author)
+- Solution/project relationships
+
+**Simple Tasks**:
+1. Recursively traverse directory structure
+2. Identify all .sln and .csproj files
+3. Parse project files for references
+4. Count lines of code per file
+5. Generate inventory report
+
+**Dependencies**: None (entry point agent)
+
+**Success Criteria**:
+- 100% file discovery
+- Accurate project dependency graph
+- No false positives/negatives
+
+---
+
+### **2. DependencyAnalyzer**
+
+**Purpose**: Analyzes all NuGet packages, assembly references, and project dependencies.
+
+**Inputs**:
+- Project files (.csproj)
+- packages.config files
+- Solution file (.sln)
+
+**Outputs**:
+- Dependency graph (JSON/Graph format)
+- Package versions list
+- Outdated packages report
+- Transitive dependency tree
+- Vulnerability report (from NuGet)
+
+**Simple Tasks**:
+1. Extract all NuGet package references
+2. Extract all assembly references
+3. Extract all project-to-project references
+4. Check for version conflicts
+5. Query NuGet API for latest versions
+6. Identify deprecated packages
+
+**Dependencies**: 
+- CodebaseScanner (for project file locations)
+
+**Success Criteria**:
+- All dependencies discovered
+- Accurate version mapping
+- Conflict detection rate > 95%
+
+---
+
+### **3. FrameworkDetector**
+
+**Purpose**: Detects the .NET framework version(s) used across all projects.
+
+**Inputs**:
+- Project files (.csproj)
+- Assembly metadata
+- Config files (app.config, web.config)
+
+**Outputs**:
+- Framework version per project
+- Target framework summary
+- Mixed framework warning report
+- SDK-style vs old-style project format
+
+**Simple Tasks**:
+1. Parse TargetFramework/TargetFrameworks from .csproj
+2. Detect SDK-style vs legacy project format
+3. Identify runtime version from config files
+4. Check assembly manifest for framework version
+5. Generate framework compatibility matrix
+
+**Dependencies**:
+- CodebaseScanner
+
+**Success Criteria**:
+- 100% accurate framework detection
+- Clear identification of migration candidates
+
+---
+
+### **4. TechDebtIdentifier**
+
+**Purpose**: Identifies technical debt patterns, code smells, and anti-patterns.
+
+**Inputs**:
+- Source code files (.cs)
+- Project structure
+- Code metrics
+
+**Outputs**:
+- Technical debt inventory (JSON)
+- Severity scores (High/Medium/Low)
+- Code smell locations (file, line number)
+- Complexity metrics (cyclomatic, cognitive)
+- Refactoring recommendations
+
+**Simple Tasks**:
+1. Detect God classes (>1000 LOC)
+2. Find long methods (>50 LOC)
+3. Identify high cyclomatic complexity (>10)
+4. Detect duplicate code blocks
+5. Find magic numbers/strings
+6. Identify missing XML documentation
+7. Detect obsolete API usage
+8. Find TODO/HACK/FIXME comments
+
+**Dependencies**:
+- CodebaseScanner
+- FrameworkDetector
+
+**Success Criteria**:
+- Detection accuracy > 85%
+- Low false positive rate (<10%)
+- Actionable recommendations
+
+---
+
+### **5. SecurityVulnerabilityScanner**
+
+**Purpose**: Scans for known security vulnerabilities in code and dependencies.
+
+**Inputs**:
+- Source code files
+- Dependency list
+- NuGet packages
+
+**Outputs**:
+- Vulnerability report (CVE numbers)
+- Severity ratings (Critical/High/Medium/Low)
+- Affected packages/versions
+- Remediation recommendations
+- Security code pattern violations
+
+**Simple Tasks**:
+1. Query NuGet vulnerability database
+2. Scan for SQL injection patterns
+3. Detect weak cryptography usage
+4. Find hard-coded credentials/secrets
+5. Identify insecure deserialization
+6. Check for XXE vulnerabilities
+7. Detect CSRF vulnerabilities
+8. Find insecure random number generation
+
+**Dependencies**:
+- DependencyAnalyzer
+- CodebaseScanner
+
+**Success Criteria**:
+- All CVEs identified
+- Code pattern detection accuracy > 90%
+- Zero false negatives for Critical issues
+
+---
+
+### **6. PerformanceBottleneckFinder**
+
+**Purpose**: Identifies performance anti-patterns and bottlenecks in code.
+
+**Inputs**:
+- Source code files
+- Database query code
+- HTTP request patterns
+
+**Outputs**:
+- Performance issue inventory
+- Hot path identification
+- N+1 query detection
+- Inefficient LINQ usage
+- Synchronous blocking calls
+- Memory leak patterns
+
+**Simple Tasks**:
+1. Detect synchronous database calls in async methods
+2. Find N+1 query patterns (loops with queries)
+3. Identify inefficient LINQ (multiple enumerations)
+4. Detect large object allocations
+5. Find string concatenation in loops
+6. Identify missing async/await patterns
+7. Detect improper disposal patterns
+8. Find reflection in hot paths
+
+**Dependencies**:
+- CodebaseScanner
+- TechDebtIdentifier
+
+**Success Criteria**:
+- Identify top 20 performance issues
+- Detection accuracy > 80%
+- Prioritized by impact
+
+---
+
+## **ASSESSMENT & PLANNING AGENTS (5)**
+
+### **7. ModernizationPlanGenerator**
+
+**Purpose**: Creates a comprehensive, phased modernization plan based on all analysis results.
+
+**Inputs**:
+- All Core Analysis Agent outputs
+- Risk assessment report
+- Priority rankings
+- Compatibility matrix
+
+**Outputs**:
+- Multi-phase modernization plan
+- Milestone definitions
+- Task breakdown per phase
+- Dependency ordering
+- Estimated timeline
+- Resource allocation suggestions
+
+**Simple Tasks**:
+1. Aggregate all analysis reports
+2. Group related changes into phases
+3. Order phases by dependency
+4. Define success criteria per phase
+5. Create rollback points
+6. Generate Gantt chart / timeline
+7. Identify parallel vs sequential work
+
+**Dependencies**:
+- All Core Analysis Agents
+- RiskAssessor
+- PriorityRanker
+
+**Success Criteria**:
+- Logical phase ordering
+- No circular dependencies
+- Realistic timeline
+- Clear deliverables per phase
+
+---
+
+### **8. MigrationPathRecommender**
+
+**Purpose**: Recommends the optimal migration strategy based on current state and target.
+
+**Inputs**:
+- Current framework versions
+- Target framework version
+- Codebase complexity
+- Risk tolerance
+
+**Outputs**:
+- Recommended migration path
+- Alternative paths with pros/cons
+- Incremental vs big-bang recommendation
+- Required intermediate steps
+- Breaking change warnings
+
+**Simple Tasks**:
+1. Analyze framework version gap
+2. Check for unsupported APIs in target
+3. Recommend intermediate versions (.NET Standard)
+4. Suggest multi-targeting strategy
+5. Identify blockers for direct migration
+6. Calculate risk score per path
+7. Generate migration sequence
+
+**Dependencies**:
+- FrameworkDetector
+- CompatibilityChecker
+- RiskAssessor
+
+**Success Criteria**:
+- Path leads to successful migration
+- Minimal disruption
+- Clear step-by-step guidance
+
+---
+
+### **9. RiskAssessor**
+
+**Purpose**: Identifies and quantifies risks associated with modernization.
+
+**Inputs**:
+- Codebase complexity metrics
+- Dependency graph
+- Test coverage report
+- Breaking changes list
+
+**Outputs**:
+- Risk register (JSON)
+- Risk scores per component (1-10)
+- Risk categories (Technical/Business/Schedule)
+- Mitigation strategies
+- High-risk area highlighting
+
+**Simple Tasks**:
+1. Score complexity risk (cyclomatic, coupling)
+2. Score dependency risk (outdated, deprecated)
+3. Score test coverage risk (low coverage = high risk)
+4. Score breaking change risk
+5. Score business criticality risk
+6. Aggregate into overall risk score
+7. Suggest mitigation per risk
+
+**Dependencies**:
+- TechDebtIdentifier
+- DependencyAnalyzer
+- CodeCoverageAnalyzer
+
+**Success Criteria**:
+- Risk identification rate > 90%
+- Accurate severity scoring
+- Actionable mitigation strategies
+
+---
+
+### **10. PriorityRanker**
+
+**Purpose**: Ranks all components/modules by modernization priority.
+
+**Inputs**:
+- Risk scores
+- Business value indicators
+- Technical debt scores
+- Dependency graph
+
+**Outputs**:
+- Prioritized component list
+- Priority scores (1-100)
+- Ranking rationale per component
+- Quick wins vs long-term improvements
+- Dependency-ordered task list
+
+**Simple Tasks**:
+1. Assign business value scores
+2. Assign technical debt scores
+3. Assign risk scores
+4. Calculate dependency depth
+5. Apply weighted scoring formula
+6. Sort by priority score
+7. Group into priority tiers (P0, P1, P2, P3)
+
+**Dependencies**:
+- RiskAssessor
+- TechDebtIdentifier
+- DependencyAnalyzer
+
+**Success Criteria**:
+- Logical priority ordering
+- Balance of quick wins and strategic work
+- Stakeholder agreement on priorities
+
+---
+
+### **11. CompatibilityChecker**
+
+**Purpose**: Verifies compatibility of current code/dependencies with target framework.
+
+**Inputs**:
+- Current dependencies
+- Target framework version
+- Source code patterns
+- API usage inventory
+
+**Outputs**:
+- Compatibility report (JSON)
+- Compatible/incompatible package list
+- Breaking API changes
+- Alternative package recommendations
+- Platform-specific issues (Windows/Linux)
+
+**Simple Tasks**:
+1. Query NuGet for target framework support
+2. Check .NET API compatibility
+3. Identify Windows-specific APIs
+4. Find deprecated APIs in target
+5. Suggest package alternatives
+6. Check for framework-specific features
+7. Validate target runtime compatibility
+
+**Dependencies**:
+- DependencyAnalyzer
+- FrameworkDetector
+
+**Success Criteria**:
+- 100% dependency compatibility checked
+- Accurate breaking change identification
+- Viable alternatives for incompatible packages
+
+---
+
+## **CODE TRANSFORMATION AGENTS (9)**
+
+### **12. FrameworkMigrator**
+
+**Purpose**: Migrates project files from old framework to target framework.
+
+**Inputs**:
+- Project files (.csproj)
+- Target framework version
+- Migration path
+
+**Outputs**:
+- Updated project files
+- SDK-style project format
+- Updated TargetFramework element
+- Removed obsolete elements
+- Migration log
+
+**Simple Tasks**:
+1. Convert to SDK-style project format
+2. Update TargetFramework element
+3. Remove obsolete PropertyGroup elements
+4. Update PackageReference format
+5. Remove unnecessary files from .csproj
+6. Update assembly info attributes
+7. Update build configurations
+
+**Dependencies**:
+- FrameworkDetector
+- MigrationPathRecommender
+
+**Success Criteria**:
+- Valid project files
+- Builds successfully
+- All references preserved
+
+---
+
+### **13. SyntaxModernizer**
+
+**Purpose**: Modernizes C# syntax to use latest language features.
+
+**Inputs**:
+- C# source files
+- Target C# version
+- Code style preferences
+
+**Outputs**:
+- Updated source files
+- Syntax change report
+- Before/after comparisons
+
+**Simple Tasks**:
+1. Convert properties to expression-bodied members
+2. Use var where appropriate
+3. Convert string.Format to string interpolation
+4. Use null-coalescing operators (??, ??=)
+5. Convert to switch expressions
+6. Use target-typed new expressions
+7. Apply pattern matching where applicable
+8. Use local functions instead of lambdas
+
+**Dependencies**:
+- CodebaseScanner
+- FrameworkDetector
+
+**Success Criteria**:
+- Semantic equivalence preserved
+- Improved readability
+- No compilation errors
+
+---
+
+### **14. NullabilityRefactorer**
+
+**Purpose**: Adds nullable reference type annotations and fixes null-related warnings.
+
+**Inputs**:
+- C# source files
+- Nullable context settings
+
+**Outputs**:
+- Updated source files with nullable annotations
+- Null-safety warnings fixed
+- #nullable enable directives added
+
+**Simple Tasks**:
+1. Add #nullable enable to files
+2. Annotate reference types with ? where nullable
+3. Annotate non-nullable parameters with !
+4. Add null checks where required
+5. Fix CS8600-CS8629 warnings
+6. Update method signatures for null safety
+7. Add guard clauses for null parameters
+
+**Dependencies**:
+- CodebaseScanner
+- StaticCodeAnalyzer
+
+**Success Criteria**:
+- Zero nullable warnings
+- No runtime null reference exceptions
+- Clear intent with annotations
+
+---
+
+### **15. AsyncAwaitConverter**
+
+**Purpose**: Converts synchronous code to async/await patterns.
+
+**Inputs**:
+- C# source files
+- Async conversion candidates
+
+**Outputs**:
+- Async method implementations
+- Updated method signatures
+- Async call chain updates
+
+**Simple Tasks**:
+1. Identify synchronous blocking calls
+2. Convert methods to async Task/Task<T>
+3. Add async/await keywords
+4. Update calling code to await
+5. Replace .Result with await
+6. Replace .Wait() with await
+7. Update method names with Async suffix
+8. Handle CancellationToken parameters
+
+**Dependencies**:
+- PerformanceBottleneckFinder
+- CodebaseScanner
+
+**Success Criteria**:
+- No blocking calls in async methods
+- Proper async propagation
+- No deadlocks introduced
+
+---
+
+### **16. LinqOptimizer**
+
+**Purpose**: Optimizes LINQ queries for performance and readability.
+
+**Inputs**:
+- C# source files with LINQ
+- Performance profiling data
+
+**Outputs**:
+- Optimized LINQ queries
+- Performance improvement report
+
+**Simple Tasks**:
+1. Eliminate multiple enumerations (add .ToList() where needed)
+2. Replace Count() > 0 with Any()
+3. Use FirstOrDefault instead of Where().First()
+4. Avoid unnecessary Select() projections
+5. Use efficient predicates in Where()
+6. Replace complex LINQ with loops where appropriate
+7. Use AsParallel() for CPU-bound operations
+8. Avoid closure allocations in loops
+
+**Dependencies**:
+- PerformanceBottleneckFinder
+- CodebaseScanner
+
+**Success Criteria**:
+- Measurable performance improvement
+- Semantic equivalence maintained
+- Improved readability
+
+---
+
+### **17. RecordTypeConverter**
+
+**Purpose**: Converts DTOs and simple classes to record types.
+
+**Inputs**:
+- C# source files
+- Class definitions
+- Conversion rules
+
+**Outputs**:
+- Record type definitions
+- Conversion report
+
+**Simple Tasks**:
+1. Identify candidate classes (immutable DTOs)
+2. Convert to record with primary constructor
+3. Remove boilerplate properties
+4. Keep custom methods/logic
+5. Update instantiation syntax
+6. Handle inheritance scenarios
+7. Convert to readonly record structs where applicable
+
+**Dependencies**:
+- CodebaseScanner
+- SyntaxModernizer
+
+**Success Criteria**:
+- Reduced boilerplate code
+- Value equality semantics correct
+- Serialization compatibility maintained
+
+---
+
+### **18. PatternMatchingRefactorer**
+
+**Purpose**: Refactors code to use modern pattern matching features.
+
+**Inputs**:
+- C# source files
+- Target C# version
+
+**Outputs**:
+- Pattern matching implementations
+- Refactoring report
+
+**Simple Tasks**:
+1. Convert type checks to pattern matching (is Type x)
+2. Use switch expressions instead of switch statements
+3. Apply property patterns
+4. Use tuple patterns for multiple conditions
+5. Implement relational patterns (<, >, etc.)
+6. Use list patterns (C# 11+)
+7. Simplify null checks with patterns
+8. Use declaration patterns
+
+**Dependencies**:
+- CodebaseScanner
+- SyntaxModernizer
+
+**Success Criteria**:
+- Improved code clarity
+- Reduced nesting
+- Semantic equivalence
+
+---
+
+### **19. GlobalUsingOrganizer**
+
+**Purpose**: Consolidates and organizes global using directives.
+
+**Inputs**:
+- C# source files
+- Project files
+
+**Outputs**:
+- GlobalUsings.cs file
+- Updated source files (removed redundant usings)
+- Organization report
+
+**Simple Tasks**:
+1. Analyze using directives across all files
+2. Identify common usings (>50% of files)
+3. Create GlobalUsings.cs with global usings
+4. Remove redundant usings from individual files
+5. Organize usings (System first, then alphabetical)
+6. Remove unused usings
+7. Add ImplicitUsings to project file where appropriate
+
+**Dependencies**:
+- CodebaseScanner
+
+**Success Criteria**:
+- Reduced file size
+- Cleaner file headers
+- No missing using directives
+
+---
+
+### **20. FileScopedNamespaceConverter**
+
+**Purpose**: Converts namespace declarations to file-scoped namespaces.
+
+**Inputs**:
+- C# source files (C# 10+)
+
+**Outputs**:
+- Updated source files with file-scoped namespaces
+- Conversion report
+
+**Simple Tasks**:
+1. Identify files with single namespace
+2. Convert namespace { } to namespace ;
+3. Remove unnecessary braces and indentation
+4. Adjust code formatting
+5. Handle edge cases (multiple types per file)
+6. Verify compilation after conversion
+
+**Dependencies**:
+- CodebaseScanner
+- SyntaxModernizer
+
+**Success Criteria**:
+- Reduced indentation level
+- Cleaner file structure
+- No compilation errors
+
+---
+
+## **ARCHITECTURE MODERNIZATION AGENTS (4)**
+
+### **21. APIModernizer**
+
+**Purpose**: Modernizes API implementations to use latest ASP.NET Core patterns.
+
+**Inputs**:
+- Controller files
+- API routing configuration
+- Middleware pipeline
+
+**Outputs**:
+- Modernized controllers/endpoints
+- Updated routing
+- API versioning implementation
+
+**Simple Tasks**:
+1. Convert to attribute routing
+2. Implement minimal APIs where appropriate
+3. Add API versioning (Microsoft.AspNetCore.Mvc.Versioning)
+4. Convert to async controller actions
+5. Implement proper status code responses
+6. Add OpenAPI/Swagger documentation
+7. Implement problem details (RFC 7807)
+8. Add request/response compression
+
+**Dependencies**:
+- FrameworkMigrator
+- AsyncAwaitConverter
+
+**Success Criteria**:
+- RESTful best practices followed
+- Proper HTTP status codes
+- OpenAPI documentation complete
+
+---
+
+### **22. DependencyInjectionRefactorer**
+
+**Purpose**: Refactors code to use proper dependency injection patterns.
+
+**Inputs**:
+- Service registrations
+- Constructor implementations
+- Service locator patterns
+
+**Outputs**:
+- Updated DI registrations
+- Constructor injection implementations
+- Service lifetime configuration
+
+**Simple Tasks**:
+1. Identify service locator anti-patterns
+2. Convert to constructor injection
+3. Register services in Startup/Program.cs
+4. Set appropriate service lifetimes (Singleton/Scoped/Transient)
+5. Remove static dependencies
+6. Implement factory patterns where needed
+7. Add interface abstractions for testability
+8. Remove circular dependencies
+
+**Dependencies**:
+- TechDebtIdentifier
+- CodebaseScanner
+
+**Success Criteria**:
+- No service locator usage
+- Proper constructor injection
+- Correct service lifetimes
+- Testable code
+
+---
+
+### **23. ConfigurationModernizer**
+
+**Purpose**: Migrates configuration from legacy formats to modern options pattern.
+
+**Inputs**:
+- app.config / web.config files
+- ConfigurationManager usage
+- Legacy settings
+
+**Outputs**:
+- appsettings.json files
+- Options pattern implementations
+- IConfiguration usage
+
+**Simple Tasks**:
+1. Convert XML config to JSON (appsettings.json)
+2. Implement options pattern (IOptions<T>)
+3. Replace ConfigurationManager with IConfiguration
+4. Set up configuration providers (JSON, Environment, User Secrets)
+5. Implement strongly-typed configuration classes
+6. Add configuration validation
+7. Handle environment-specific settings
+8. Migrate connection strings
+
+**Dependencies**:
+- FrameworkMigrator
+- DependencyInjectionRefactorer
+
+**Success Criteria**:
+- No ConfigurationManager usage
+- Type-safe configuration
+- Environment-specific overrides working
+
+---
+
+### **24. MiddlewareMigrator**
+
+**Purpose**: Migrates HTTP modules/handlers to ASP.NET Core middleware.
+
+**Inputs**:
+- HTTP modules (IHttpModule)
+- HTTP handlers (IHttpHandler)
+- web.config middleware configuration
+
+**Outputs**:
+- ASP.NET Core middleware implementations
+- Middleware pipeline configuration
+- Migration report
+
+**Simple Tasks**:
+1. Identify HTTP modules/handlers
+2. Convert to middleware pattern
+3. Implement IMiddleware or inline middleware
+4. Update middleware pipeline in Program.cs
+5. Handle request/response manipulation
+6. Convert authentication/authorization modules
+7. Implement error handling middleware
+8. Ensure proper ordering in pipeline
+
+**Dependencies**:
+- FrameworkMigrator
+- APIModernizer
+
+**Success Criteria**:
+- All modules converted to middleware
+- Request pipeline functional
+- Proper middleware ordering
+
+---
+
+## **TESTING & QUALITY AGENTS (6)**
+
+### **25. TestGenerator**
+
+**Purpose**: Generates unit tests for untested code.
+
+**Inputs**:
+- Source code files
+- Code coverage report
+- Test framework preference (xUnit/NUnit/MSTest)
+
+**Outputs**:
+- Unit test files
+- Test coverage improvement report
+- Test data generators
+
+**Simple Tasks**:
+1. Identify untested public methods
+2. Generate test class skeleton
+3. Create test methods (Arrange-Act-Assert pattern)
+4. Generate test data (using AutoFixture/Bogus)
+5. Add assertions for expected behavior
+6. Generate edge case tests
+7. Create mock setups for dependencies
+8. Add test descriptions/documentation
+
+**Dependencies**:
+- CodebaseScanner
+- CodeCoverageAnalyzer
+
+**Success Criteria**:
+- Minimum 70% code coverage for new tests
+- Tests follow AAA pattern
+- Tests are maintainable
+
+---
+
+### **26. TestMigrator**
+
+**Purpose**: Migrates tests to modern testing frameworks and patterns.
+
+**Inputs**:
+- Existing test files
+- Target test framework
+- Legacy test patterns
+
+**Outputs**:
+- Migrated test files
+- Updated test runners
+- Migration report
+
+**Simple Tasks**:
+1. Convert test attributes ([Test] → [Fact])
+2. Update assertion syntax (Assert.AreEqual → Assert.Equal)
+3. Migrate test setup/teardown
+4. Convert test categories to traits
+5. Update test project references
+6. Migrate mocking framework (Moq updates)
+7. Convert async test patterns
+8. Update test discovery configuration
+
+**Dependencies**:
+- TestGenerator
+- FrameworkMigrator
+
+**Success Criteria**:
+- All tests pass after migration
+- Test execution time maintained
+- No test framework dependencies mixed
+
+---
+
+### **27. CodeCoverageAnalyzer**
+
+**Purpose**: Analyzes code coverage and identifies gaps.
+
+**Inputs**:
+- Test results
+- Source code
+- Coverage reports (Coverlet/OpenCover)
+
+**Outputs**:
+- Coverage report (HTML/JSON)
+- Coverage percentage per assembly/class/method
+- Uncovered code locations
+- Coverage trend analysis
+
+**Simple Tasks**:
+1. Run code coverage tool (Coverlet)
+2. Generate coverage reports
+3. Calculate coverage percentages
+4. Identify critical uncovered code
+5. Create coverage trend graphs
+6. Export coverage badges
+7. Highlight coverage gaps by priority
+
+**Dependencies**:
+- TestGenerator
+- BuildVerifier
+
+**Success Criteria**:
+- Accurate coverage metrics
+- Clear visualization
+- Actionable gap identification
+
+---
+
+### **28. StaticCodeAnalyzer**
+
+**Purpose**: Performs static code analysis using Roslyn analyzers.
+
+**Inputs**:
+- Source code files
+- .editorconfig rules
+- Analyzer packages
+
+**Outputs**:
+- Code analysis warnings/errors
+- Code quality metrics
+- Rule violation report
+- Suggested fixes
+
+**Simple Tasks**:
+1. Run Roslyn analyzers
+2. Apply .editorconfig rules
+3. Check code style violations
+4. Detect potential bugs
+5. Find security issues
+6. Generate quality metrics
+7. Suggest automated fixes
+8. Create rule violation report
+
+**Dependencies**:
+- CodebaseScanner
+- BuildVerifier
+
+**Success Criteria**:
+- Zero critical warnings
+- <5% false positives
+- Actionable recommendations
+
+---
+
+### **29. DocumentationGenerator**
+
+**Purpose**: Generates and updates XML documentation comments.
+
+**Inputs**:
+- Source code files
+- Existing documentation
+- Documentation standards
+
+**Outputs**:
+- XML documentation comments
+- API documentation (HTML)
+- Markdown documentation
+
+**Simple Tasks**:
+1. Identify undocumented public APIs
+2. Generate XML doc comment templates
+3. Infer parameter descriptions from names
+4. Generate summary comments from method names
+5. Add exception documentation
+6. Generate example usage code
+7. Create DocFX or Sandcastle documentation
+8. Update README files
+
+**Dependencies**:
+- CodebaseScanner
+- StaticCodeAnalyzer
+
+**Success Criteria**:
+- 100% public API documented
+- Clear and accurate descriptions
+- Examples for complex APIs
+
+---
+
+### **30. ObsoleteAPIReplacer**
+
+**Purpose**: Replaces obsolete APIs with modern equivalents.
+
+**Inputs**:
+- Source code using obsolete APIs
+- Obsolete API mapping
+- Target framework APIs
+
+**Outputs**:
+- Updated source code
+- API replacement report
+- Breaking change warnings
+
+**Simple Tasks**:
+1. Detect obsolete API usage (compiler warnings)
+2. Look up replacement APIs
+3. Update method calls
+4. Update using statements
+5. Handle parameter changes
+6. Update return type handling
+7. Add migration comments
+8. Verify compilation
+
+**Dependencies**:
+- CompatibilityChecker
+- FrameworkDetector
+
+**Success Criteria**:
+- No obsolete API warnings
+- Semantic equivalence maintained
+- Compilation successful
+
+---
+
+## **DATA & ORM AGENTS (5)**
+
+### **31. EntityFrameworkUpgrader**
+
+**Purpose**: Upgrades Entity Framework 6.x to Entity Framework Core.
+
+**Inputs**:
+- DbContext classes
+- Entity configurations
+- Database migrations
+- EF6 project references
+
+**Outputs**:
+- EF Core DbContext
+- Updated entity configurations
+- Migrated database migrations
+- Package reference updates
+
+**Simple Tasks**:
+1. Update NuGet packages (EF6 → EF Core)
+2. Update DbContext inheritance
+3. Convert Fluent API configurations
+4. Update entity mapping attributes
+5. Migrate database initializers
+6. Convert complex types to owned entities
+7. Update LINQ queries for EF Core compatibility
+8. Regenerate migrations
+
+**Dependencies**:
+- DependencyAnalyzer
+- FrameworkMigrator
+
+**Success Criteria**:
+- All entities mapped correctly
+- Database schema preserved
+- Queries return same results
+
+---
+
+### **32. DatabaseQueryOptimizer**
+
+**Purpose**: Optimizes database queries for performance.
+
+**Inputs**:
+- EF Core queries
+- Raw SQL queries
+- Query execution plans
+
+**Outputs**:
+- Optimized queries
+- Performance improvement report
+- Index recommendations
+
+**Simple Tasks**:
+1. Detect N+1 query problems
+2. Add .Include() for eager loading
+3. Use .AsNoTracking() for read-only queries
+4. Split complex queries
+5. Add appropriate indexes
+6. Use compiled queries for hot paths
+7. Replace inefficient projections
+8. Batch database operations
+
+**Dependencies**:
+- PerformanceBottleneckFinder
+- EntityFrameworkUpgrader
+
+**Success Criteria**:
+- Measurable query performance improvement
+- Reduced database round trips
+- Proper indexing
+
+---
+
+### **33. ORMPatternRefactorer**
+
+**Purpose**: Refactors code to follow proper ORM patterns and best practices.
+
+**Inputs**:
+- Repository implementations
+- DbContext usage
+- Data access code
+
+**Outputs**:
+- Refactored repository pattern
+- Unit of Work implementation
+- Updated data access layer
+
+**Simple Tasks**:
+1. Implement repository pattern
+2. Implement unit of work pattern
+3. Separate queries from commands (CQRS lite)
+4. Add specification pattern for complex queries
+5. Implement proper transaction handling
+6. Add change tracking optimization
+7. Implement proper disconnected entity handling
+8. Add auditing/soft delete infrastructure
+
+**Dependencies**:
+- EntityFrameworkUpgrader
+- TechDebtIdentifier
+
+**Success Criteria**:
+- Clear separation of concerns
+- Testable data access
+- Transaction consistency
+
+---
+
+### **34. DataAccessLayerModernizer**
+
+**Purpose**: Modernizes the data access layer architecture.
+
+**Inputs**:
+- Existing DAL implementation
+- Business logic
+- Database access patterns
+
+**Outputs**:
+- Modernized DAL structure
+- Async data access methods
+- Proper abstraction layers
+
+**Simple Tasks**:
+1. Extract data access to separate layer
+2. Create data access interfaces
+3. Implement async methods
+4. Add proper error handling
+5. Implement retry policies (Polly)
+6. Add connection resiliency
+7. Implement caching strategy
+8. Add query result pagination
+
+**Dependencies**:
+- EntityFrameworkUpgrader
+- AsyncAwaitConverter
+- DependencyInjectionRefactorer
+
+**Success Criteria**:
+- Clear DAL boundaries
+- Async throughout
+- Resilient to transient failures
+
+---
+
+### **35. MigrationScriptGenerator**
+
+**Purpose**: Generates database migration scripts for schema changes.
+
+**Inputs**:
+- EF Core model changes
+- Database context
+- Target database provider
+
+**Outputs**:
+- EF Core migration files
+- SQL scripts (up/down)
+- Data migration scripts
+- Migration documentation
+
+**Simple Tasks**:
+1. Detect model changes
+2. Generate EF Core migration
+3. Generate idempotent SQL scripts
+4. Create data migration scripts for breaking changes
+5. Add migration rollback scripts
+6. Generate seed data scripts
+7. Document schema changes
+8. Validate migration safety
+
+**Dependencies**:
+- EntityFrameworkUpgrader
+- DatabaseQueryOptimizer
+
+**Success Criteria**:
+- Safe migrations (no data loss)
+- Idempotent scripts
+- Rollback capability
+
+---
+
+## **SECURITY HARDENING AGENTS (5)**
+
+### **36. AuthenticationModernizer**
+
+**Purpose**: Modernizes authentication to use ASP.NET Core Identity and modern auth patterns.
+
+**Inputs**:
+- Legacy authentication code
+- FormsAuthentication usage
+- Membership provider code
+
+**Outputs**:
+- ASP.NET Core Identity implementation
+- JWT/Cookie authentication
+- Updated login/logout flows
+
+**Simple Tasks**:
+1. Migrate from FormsAuthentication to ASP.NET Core Identity
+2. Configure authentication middleware
+3. Implement JWT bearer authentication
+4. Update login/logout endpoints
+5. Migrate user stores
+6. Implement password hashing (Identity default)
+7. Add multi-factor authentication support
+8. Implement external authentication (OAuth/OIDC)
+
+**Dependencies**:
+- FrameworkMigrator
+- ConfigurationModernizer
+- MiddlewareMigrator
+
+**Success Criteria**:
+- Secure authentication flow
+- User data preserved
+- Modern auth standards followed
+
+---
+
+### **37. AuthorizationPolicyRefactorer**
+
+**Purpose**: Refactors authorization to use policy-based authorization.
+
+**Inputs**:
+- Role-based authorization code
+- Custom authorize attributes
+- Permission checks
+
+**Outputs**:
+- Policy-based authorization
+- Custom authorization handlers
+- Updated authorization attributes
+
+**Simple Tasks**:
+1. Convert role checks to policies
+2. Implement custom authorization requirements
+3. Create authorization handlers
+4. Define policies in Startup/Program.cs
+5. Update controller/action attributes
+6. Implement resource-based authorization
+7. Add claims-based authorization
+8. Remove hardcoded role checks
+
+**Dependencies**:
+- AuthenticationModernizer
+- DependencyInjectionRefactorer
+
+**Success Criteria**:
+- Flexible authorization model
+- Testable authorization logic
+- Clear separation of concerns
+
+---
+
+### **38. CryptographyUpdater**
+
+**Purpose**: Updates cryptographic implementations to use modern, secure algorithms.
+
+**Inputs**:
+- Existing crypto code
+- Hashing implementations
+- Encryption/decryption code
+
+**Outputs**:
+- Updated cryptography code
+- Security improvement report
+- Deprecated algorithm removal
+
+**Simple Tasks**:
+1. Replace MD5/SHA1 with SHA256/SHA512
+2. Update to AES from DES/3DES
+3. Use proper key derivation (PBKDF2/Argon2)
+4. Implement secure random number generation
+5. Update certificate validation
+6. Remove insecure cipher suites
+7. Use authenticated encryption (AES-GCM)
+8. Implement proper IV generation
+
+**Dependencies**:
+- SecurityVulnerabilityScanner
+- ObsoleteAPIReplacer
+
+**Success Criteria**:
+- No weak cryptography warnings
+- NIST/OWASP compliance
+- Backward compatibility for encrypted data
+
+---
+
+### **39. InputValidationEnhancer**
+
+**Purpose**: Enhances input validation across the application.
+
+**Inputs**:
+- API endpoints
+- Form submissions
+- User input handling code
+
+**Outputs**:
+- Validation attributes
+- Custom validators
+- Sanitization logic
+
+**Simple Tasks**:
+1. Add data annotation validation attributes
+2. Implement FluentValidation for complex rules
+3. Add model state validation
+4. Implement input sanitization (XSS prevention)
+5. Add request size limits
+6. Implement rate limiting
+7. Add CORS validation
+8. Validate file uploads (type, size, content)
+
+**Dependencies**:
+- APIModernizer
+- SecurityVulnerabilityScanner
+
+**Success Criteria**:
+- Comprehensive input validation
+- XSS/injection prevention
+- Clear validation error messages
+
+---
+
+### **40. SecretManagerIntegrator**
+
+**Purpose**: Removes hardcoded secrets and integrates secret management.
+
+**Inputs**:
+- Source code with secrets
+- Configuration files
+- Connection strings
+
+**Outputs**:
+- Secrets moved to secure storage
+- Secret manager integration
+- Updated configuration
+
+**Simple Tasks**:
+1. Detect hardcoded secrets (API keys, passwords)
+2. Move secrets to User Secrets (development)
+3. Configure Azure Key Vault / AWS Secrets Manager
+4. Update configuration to read from secret store
+5. Remove secrets from source code
+6. Add .gitignore for local secrets
+7. Document secret management process
+8. Implement secret rotation support
+
+**Dependencies**:
+- SecurityVulnerabilityScanner
+- ConfigurationModernizer
+
+**Success Criteria**:
+- No secrets in source control
+- Secure secret access
+- Environment-specific secrets
+
+---
+
+## **LEGACY TECHNOLOGY MODERNIZATION AGENTS (6)**
+
+### **41. WCFToRESTConverter**
+
+**Purpose**: Converts WCF services to REST APIs (Web API / Minimal APIs).
+
+**Inputs**:
+- WCF service contracts
+- WCF implementations
+- Service bindings configuration
+
+**Outputs**:
+- REST API controllers / endpoints
+- DTO models
+- API documentation
+
+**Simple Tasks**:
+1. Parse WCF service contracts (interfaces)
+2. Map operations to HTTP verbs (GET/POST/PUT/DELETE)
+3. Convert DataContracts to DTOs
+4. Generate controller actions
+5. Map complex types to JSON
+6. Convert WCF faults to ProblemDetails
+7. Update client proxy generation
+8. Implement equivalent authentication
+
+**Dependencies**:
+- FrameworkMigrator
+- APIModernizer
+
+**Success Criteria**:
+- Functional API equivalence
+- RESTful design principles
+- OpenAPI documentation
+
+---
+
+### **42. WebFormsToRazorMigrator**
+
+**Purpose**: Migrates ASP.NET WebForms to Razor Pages / MVC.
+
+**Inputs**:
+- .aspx pages
+- Code-behind files (.aspx.cs)
+- Master pages
+- User controls
+
+**Outputs**:
+- Razor Pages / MVC views
+- Page models / controllers
+- Shared layouts
+
+**Simple Tasks**:
+1. Convert .aspx markup to Razor syntax
+2. Migrate code-behind to page models/controllers
+3. Convert master pages to _Layout.cshtml
+4. Convert user controls to partial views / view components
+5. Map ViewState to TempData/session
+6. Convert postback logic to form submissions
+7. Update routing from WebForms to MVC/Pages routing
+8. Migrate server controls to HTML helpers / tag helpers
+
+**Dependencies**:
+- FrameworkMigrator
+- APIModernizer
+
+**Success Criteria**:
+- UI functionality preserved
+- No ViewState dependencies
+- Modern routing
+
+---
+
+### **43. COMInteropModernizer**
+
+**Purpose**: Modernizes COM interop and Win32 API calls.
+
+**Inputs**:
+- P/Invoke declarations
+- COM interop code
+- Win32 API usage
+
+**Outputs**:
+- Modern .NET equivalents
+- Wrapper abstractions
+- Cross-platform alternatives
+
+**Simple Tasks**:
+1. Identify P/Invoke declarations
+2. Find modern .NET equivalents (System.IO, etc.)
+3. Wrap unavoidable Win32 calls in abstractions
+4. Add runtime platform checks
+5. Implement cross-platform alternatives (Linux/Mac)
+6. Update COM interop to dynamic or source generators
+7. Add memory management for unmanaged resources
+8. Document platform-specific code
+
+**Dependencies**:
+- CompatibilityChecker
+- FrameworkDetector
+
+**Success Criteria**:
+- Reduced Win32 dependencies
+- Cross-platform where possible
+- Proper resource disposal
+
+---
+
+### **44. ThirdPartyLibraryReplacer**
+
+**Purpose**: Finds and replaces obsolete third-party libraries.
+
+**Inputs**:
+- Dependency list
+- Obsolete library usage
+- Library compatibility matrix
+
+**Outputs**:
+- Modern library replacements
+- Updated package references
+- Migration code changes
+
+**Simple Tasks**:
+1. Identify deprecated/obsolete libraries
+2. Search for modern alternatives (NuGet/GitHub)
+3. Analyze API compatibility
+4. Generate replacement recommendations
+5. Update package references
+6. Refactor code to use new library APIs
+7. Update documentation
+8. Validate functionality after replacement
+
+**Dependencies**:
+- DependencyAnalyzer
+- CompatibilityChecker
+
+**Success Criteria**:
+- Supported, maintained libraries
+- Functionality preserved
+- Improved performance/security
+
+---
+
+### **45. CustomFrameworkAdapter**
+
+**Purpose**: Creates adapters for custom-built frameworks to work with modern .NET.
+
+**Inputs**:
+- Custom framework code
+- Framework usage patterns
+- Dependency graph
+
+**Outputs**:
+- Adapter implementations
+- Bridge patterns
+- Migration path documentation
+
+**Simple Tasks**:
+1. Analyze custom framework architecture
+2. Identify core abstractions
+3. Create adapter interfaces
+4. Implement adapter pattern for framework integration
+5. Wrap framework-specific code
+6. Create facade for simplified access
+7. Document framework usage patterns
+8. Plan incremental migration away from custom framework
+
+**Dependencies**:
+- CodebaseScanner
+- TechDebtIdentifier
+
+**Success Criteria**:
+- Modern .NET integration
+- Minimal breaking changes
+- Clear migration path forward
+
+---
+
+### **46. HumanDecisionAgent**
+
+**Purpose**: Routes complex decisions to human reviewers with full context.
+
+**Inputs**:
+- Decision required (code change, architecture choice)
+- Context (affected code, dependencies, risks)
+- Alternative options
+- AI recommendation
+
+**Outputs**:
+- Decision request ticket
+- Context documentation
+- Recommendation with pros/cons
+- Decision tracking
+
+**Simple Tasks**:
+1. Detect scenarios requiring human judgment
+2. Gather relevant context (code, dependencies, impact)
+3. Generate decision options with trade-offs
+4. Create decision request document
+5. Present to human reviewer (GitHub issue, email, dashboard)
+6. Track decision status
+7. Log decision and rationale
+8. Update modernization plan based on decision
+
+**Dependencies**:
+- All agents (can be triggered by any)
+
+**Success Criteria**:
+- Clear decision framing
+- Sufficient context provided
+- Timely human response
+- Decisions tracked and documented
+
+---
+
+## **VERIFICATION & VALIDATION AGENTS (5)**
+
+### **47. BuildVerifier**
+
+**Purpose**: Verifies successful compilation after each transformation.
+
+**Inputs**:
+- Solution/project files
+- Build configuration
+- Target framework
+
+**Outputs**:
+- Build status (success/failure)
+- Compilation errors/warnings
+- Build logs
+- Dependency resolution status
+
+**Simple Tasks**:
+1. Run dotnet build command
+2. Parse build output
+3. Categorize errors (syntax, reference, compatibility)
+4. Identify warning-as-error issues
+5. Check for missing dependencies
+6. Validate multi-targeting builds
+7. Generate build report
+8. Trigger rollback on critical failures
+
+**Dependencies**:
+- All Code Transformation Agents
+
+**Success Criteria**:
+- Clean build (0 errors)
+- Minimal warnings
+- Fast build times maintained
+
+---
+
+### **48. RegressionTester**
+
+**Purpose**: Runs existing test suites to catch regressions.
+
+**Inputs**:
+- Test projects
+- Test configuration
+- Previous test results (baseline)
+
+**Outputs**:
+- Test results (pass/fail)
+- Regression report
+- Performance comparison
+- New failures vs baseline
+
+**Simple Tasks**:
+1. Run dotnet test command
+2. Execute all test projects
+3. Compare with baseline results
+4. Identify new failures
+5. Identify flaky tests
+6. Generate test coverage delta
+7. Create regression report
+8. Trigger investigation for failures
+
+**Dependencies**:
+- BuildVerifier
+- TestMigrator
+
+**Success Criteria**:
+- Zero new test failures
+- Test execution time maintained
+- Clear failure diagnosis
+
+---
+
+### **49. PerformanceComparer**
+
+**Purpose**: Compares performance metrics before and after modernization.
+
+**Inputs**:
+- Performance benchmarks (BenchmarkDotNet)
+- Response time metrics
+- Memory usage data
+- CPU utilization
+
+**Outputs**:
+- Performance comparison report
+- Regression/improvement identification
+- Bottleneck analysis
+- Optimization recommendations
+
+**Simple Tasks**:
+1. Run performance benchmarks
+2. Collect metrics (response time, throughput, memory)
+3. Compare with baseline
+4. Identify performance regressions (>10% slower)
+5. Identify improvements
+6. Generate comparison charts
+7. Highlight critical regressions
+8. Suggest optimization opportunities
+
+**Dependencies**:
+- BuildVerifier
+- PerformanceBottleneckFinder
+
+**Success Criteria**:
+- No significant performance regression
+- Clear performance trends
+- Actionable insights
+
+---
+
+### **50. BehaviorValidator**
+
+**Purpose**: Validates that business logic behavior remains unchanged.
+
+**Inputs**:
+- Input/output test cases
+- API contracts
+- Business rules
+
+**Outputs**:
+- Behavior validation report
+- Contract violations
+- Logic drift detection
+
+**Simple Tasks**:
+1. Execute integration tests
+2. Validate API response schemas
+3. Compare output data structures
+4. Verify business rule calculations
+5. Check side effects (database, files, external calls)
+6. Validate error handling behavior
+7. Test edge cases
+8. Generate behavior change report
+
+**Dependencies**:
+- RegressionTester
+- BuildVerifier
+
+**Success Criteria**:
+- 100% behavioral equivalence for critical paths
+- Contract compatibility maintained
+- No unintended side effects
+
+---
+
+### **51. BackwardCompatibilityChecker**
+
+**Purpose**: Ensures APIs remain backward compatible with consumers.
+
+**Inputs**:
+- Public API surface
+- API contracts (OpenAPI)
+- Consumer applications (if available)
+
+**Outputs**:
+- Compatibility report
+- Breaking changes list
+- API version recommendations
+- Migration guide for consumers
+
+**Simple Tasks**:
+1. Compare public API signatures (before/after)
+2. Detect breaking changes (removed/renamed methods)
+3. Validate API contracts (OpenAPI schema)
+4. Check serialization compatibility (JSON/XML)
+5. Verify HTTP status codes unchanged
+6. Test client SDK compatibility
+7. Generate API changelog
+8. Recommend versioning strategy
+
+**Dependencies**:
+- APIModernizer
+- BuildVerifier
+
+**Success Criteria**:
+- No unintended breaking changes
+- Clear documentation of intentional breaks
+- Migration path for breaking changes
+
+---
+
+## **ORCHESTRATION & COORDINATION AGENTS (5)**
+
+### **52. MigrationOrchestrator**
+
+**Purpose**: Master coordinator that orchestrates the entire modernization process.
+
+**Inputs**:
+- Modernization plan
+- Agent registry
+- Execution context
+
+**Outputs**:
+- Execution schedule
+- Agent invocation sequence
+- Progress updates
+- Overall status
+
+**Simple Tasks**:
+1. Parse modernization plan into executable tasks
+2. Determine agent execution order (dependency graph)
+3. Invoke agents sequentially/parallel as appropriate
+4. Monitor agent execution status
+5. Handle agent failures (retry/skip/abort)
+6. Coordinate inter-agent communication
+7. Trigger validation after transformations
+8. Generate real-time progress updates
+
+**Dependencies**:
+- ModernizationPlanGenerator (for plan input)
+- All other agents (orchestrates them)
+
+**Success Criteria**:
+- Efficient execution (no unnecessary waiting)
+- Proper error handling
+- Complete audit trail
+- Successful completion of plan
+
+---
+
+### **53. ConflictResolver**
+
+**Purpose**: Resolves conflicts when multiple agents modify the same code.
+
+**Inputs**:
+- Conflicting code changes
+- Agent modification intents
+- Priority rules
+
+**Outputs**:
+- Resolved code
+- Conflict resolution report
+- Manual review requests (if needed)
+
+**Simple Tasks**:
+1. Detect overlapping modifications
+2. Parse conflicting changes
+3. Apply priority rules (which agent wins)
+4. Attempt automatic merge
+5. Identify unresolvable conflicts
+6. Route to HumanDecisionAgent if needed
+7. Log resolution decisions
+8. Validate resolved code compiles
+
+**Dependencies**:
+- All Code Transformation Agents
+- HumanDecisionAgent
+
+**Success Criteria**:
+- >90% automatic resolution rate
+- No loss of intended changes
+- Clear conflict documentation
+
+---
+
+### **54. ProgressTracker**
+
+**Purpose**: Tracks and reports modernization progress in real-time.
+
+**Inputs**:
+- Agent execution events
+- Task completion status
+- Metrics (files processed, tests passing)
+
+**Outputs**:
+- Progress dashboard data
+- Completion percentage
+- Time estimates
+- Bottleneck identification
+
+**Simple Tasks**:
+1. Subscribe to agent events
+2. Track task completion
+3. Calculate completion percentage
+4. Estimate remaining time
+5. Identify stuck/slow agents
+6. Generate progress reports (JSON/HTML)
+7. Send notifications on milestones
+8. Create visual progress dashboard
+
+**Dependencies**:
+- MigrationOrchestrator
+- All agents (consumes their events)
+
+**Success Criteria**:
+- Accurate progress reporting
+- Real-time updates (<5 sec latency)
+- Clear visibility into status
+
+---
+
+### **55. ReportGenerator**
+
+**Purpose**: Generates comprehensive reports for stakeholders.
+
+**Inputs**:
+- All agent outputs
+- Metrics and statistics
+- Comparison data (before/after)
+
+**Outputs**:
+- Executive summary report
+- Technical detailed report
+- Visual dashboards
+- Export formats (PDF, HTML, JSON)
+
+**Simple Tasks**:
+1. Aggregate data from all agents
+2. Generate executive summary (high-level metrics)
+3. Create technical detailed report
+4. Generate comparison charts (before/after)
+5. Highlight key achievements
+6. Document remaining work
+7. Create risk/issue summary
+8. Export in multiple formats
+
+**Dependencies**:
+- All agents (consumes their outputs)
+- ProgressTracker
+
+**Success Criteria**:
+- Comprehensive coverage
+- Clear visualizations
+- Actionable insights
+- Stakeholder-appropriate detail levels
+
+---
+
+### **56. RollbackCoordinator**
+
+**Purpose**: Coordinates rollback operations when issues are detected.
+
+**Inputs**:
+- Rollback trigger (validation failure)
+- Git history / backup data
+- Affected components
+
+**Outputs**:
+- Restored codebase state
+- Rollback report
+- Failure analysis
+
+**Simple Tasks**:
+1. Detect rollback trigger (critical test failure, build break)
+2. Identify affected files/commits
+3. Execute git revert / restore from backup
+4. Verify rollback success (build + tests)
+5. Document rollback reason
+6. Notify team of rollback
+7. Create incident report
+8. Recommend remediation steps
+
+**Dependencies**:
+- BuildVerifier
+- RegressionTester
+- All Verification Agents
+
+**Success Criteria**:
+- Fast rollback (<5 minutes)
+- Complete state restoration
+- No data loss
+- Clear failure documentation
+
+---
+
+## **AGENT INTERACTION PATTERNS**
+
+### **Sequential Flow Example**
+```
+CodebaseScanner → FrameworkDetector → DependencyAnalyzer → 
+ModernizationPlanGenerator → MigrationOrchestrator → 
+[Code Transformation Agents] → BuildVerifier → RegressionTester
+```
+
+### **Parallel Execution Example**
+```
+MigrationOrchestrator triggers in parallel:
+- SyntaxModernizer (files 1-100)
+- NullabilityRefactorer (files 101-200)  
+- AsyncAwaitConverter (files 201-300)
+```
+
+### **Error Handling Flow**
+```
+Agent Failure → RollbackCoordinator → Restore State → 
+HumanDecisionAgent → Manual Review → Retry or Skip
+```
+
+### **Conflict Resolution Flow**
+```
+Agent A modifies File.cs
+Agent B modifies File.cs
+→ ConflictResolver detects conflict
+→ Attempts auto-merge
+→ If fails: HumanDecisionAgent
+```
+
+---
+
+## **IMPLEMENTATION NOTES**
+
+### **Agent Communication**
+- Agents communicate via message queue (RabbitMQ/Azure Service Bus)
+- Event-driven architecture
+- Publish/subscribe pattern for coordination
+
+### **State Management**
+- Central state store (Redis/SQL)
+- Each agent publishes state changes
+- Idempotent operations for retry safety
+
+### **Error Handling**
+- Retry with exponential backoff
+- Circuit breaker pattern
+- Graceful degradation
+- Comprehensive logging
+
+### **Performance**
+- Parallel execution where possible
+- Batch operations for efficiency
+- Incremental processing (not full codebase at once)
+- Resource throttling to prevent system overload
+
+### **Testing**
+- Unit tests for each agent
+- Integration tests for agent interactions
+- End-to-end tests for full workflows
+- Synthetic codebase for testing
+
+---
+
+## **DEPLOYMENT CONSIDERATIONS**
+
+### **Agent Hosting**
+- Docker containers per agent
+- Kubernetes orchestration
+- Horizontal scaling for parallelization
+- Resource limits per agent
+
+### **Monitoring**
+- Application Insights / Prometheus
+- Agent health checks
+- Performance metrics
+- Error tracking and alerting
+
+### **Security**
+- Isolated execution environments
+- Secret management integration
+- Code scanning before execution
+- Audit logging for all changes
+
+---
+
+**Total: 56 Specialized Agents for Complete .NET Modernization**
+
+Create implementation examples for specific agents?
+Design the agent communication protocol?
+Create a sample execution flow for a real-world scenario?
+Design the data models for agent inputs/outputs?
