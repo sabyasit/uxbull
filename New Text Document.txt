@@ -1,794 +1,665 @@
-<div class="login-container">
-    <mat-card class="login-card">
-        <mat-card-header>
-            <div class="logo-container">
-                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
+<div class="resume-container">
+    <!-- Top Navigation Bar -->
+    <header class="top-nav no-print">
+        <div class="logo-section">
+            <div class="logo-icon">
+                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"
                         fill="currentColor"></path>
                 </svg>
             </div>
-            <mat-card-title>Welcome Back</mat-card-title>
-            <mat-card-subtitle>Sign in to manage your professional profile</mat-card-subtitle>
-        </mat-card-header>
-
-        <mat-card-content>
-            <form class="login-form">
-                <div class="form-field-container">
-                    <label class="custom-label">Email Address</label>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <input matInput placeholder="e.g. alex@example.com" type="email">
-                        <mat-icon matSuffix class="material-symbols-outlined input-icon">mail</mat-icon>
-                    </mat-form-field>
-                </div>
-
-                <div class="form-field-container">
-                    <div class="label-row">
-                        <label class="custom-label">Password</label>
-                        <a href="#" class="forgot-password">Forgot Password?</a>
-                    </div>
-                    <mat-form-field appearance="outline" class="full-width">
-                        <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Enter your password">
-                        <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword"
-                            [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-                            <mat-icon class="material-symbols-outlined">{{hidePassword ? 'visibility' :
-                                'visibility_off'}}</mat-icon>
-                        </button>
-                    </mat-form-field>
-                </div>
-
-                <button mat-flat-button color="primary" class="login-button">
-                    Login
+            <h2>Resume Builder</h2>
+        </div>
+        <div class="nav-actions">
+            <div class="menu-links">
+                <a href="#">Templates</a>
+                <a href="#">Settings</a>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="window.print()">
+                    <span class="material-symbols-outlined">download</span>
+                    <span>Export PDF</span>
                 </button>
-            </form>
-        </mat-card-content>
-
-        <mat-card-footer>
-            <div class="footer-content">
-                <div class="divider">
-                    <span>Or continue with</span>
-                </div>
-                <div class="social-buttons">
-                    <button mat-stroked-button class="social-btn">
-                        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_E8kbDqO9-2osocZdG5Efizm4KZunb1GfhuGzxb8seGGfBq77KuS0TZrCEn6gC9SJeu0MitxBR88ZWylI5aVf9C_CYNVNBD3Bux5Kjm4dbB-6zHvZINHz9YEluxYH-HFw5fmJIY9yrCp4jhNTfTPZwT0VBAm9a6LcPenml5bysRFboKAg-7auq_qi_A_TC8LKxKCjGE_g5cTCvCBhhXRn_gXbVSxri-mJ3CBnhLzp1UZPycWOeI9HcjM1eh-aEyEMZyJdxSRDaBU"
-                            alt="Google" class="social-icon">
-                        Google
-                    </button>
-                    <button mat-stroked-button class="social-btn">
-                        <span class="material-symbols-outlined social-icon-font">brand_awareness</span>
-                        LinkedIn
-                    </button>
-                </div>
-                <p class="signup-text">
-                    Don't have an account? <a href="#">Sign Up for free</a>
-                </p>
-            </div>
-        </mat-card-footer>
-    </mat-card>
-</div>
-
-
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
-})
-export class LoginComponent {
-  hidePassword = true;
-}
-
-
-$primary: #135bec;
-$background-light: #f6f6f8;
-$background-dark: #0f172a;
-$text-color: #0f172a;
-$text-secondary: #475569;
-
-.login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: calc(100vh - 64px); // Adjust based on header height if needed
-    padding: 2rem;
-    background-color: transparent; // Let global background show through
-}
-
-.login-card {
-    width: 100%;
-    max-width: 480px;
-    padding: 2rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    /* Glassmorphism hint if needed, or stick to solid clean white as per design */
-    background: white;
-
-    mat-card-header {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        margin-bottom: 1.5rem;
-
-        .logo-container {
-            width: 3rem; // size-12
-            height: 3rem;
-            color: $primary;
-            margin-bottom: 1rem;
-
-            .logo-svg {
-                width: 100%;
-                height: 100%;
-            }
-        }
-
-        mat-card-title {
-            font-family: 'Inter', sans-serif;
-            font-size: 2rem; // 32px
-            font-weight: 700;
-            color: $text-color;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.025em;
-        }
-
-        mat-card-subtitle {
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            color: $text-secondary;
-        }
-    }
-
-    mat-card-content {
-        .login-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .form-field-container {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .custom-label {
-            font-size: 0.875rem; // text-sm
-            font-weight: 500;
-            color: $text-color;
-        }
-
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .forgot-password {
-            color: $primary;
-            font-size: 0.75rem; // text-xs
-            font-weight: 600;
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-
-        .full-width {
-            width: 100%;
-        }
-
-        ::ng-deep .mat-mdc-form-field-wrapper {
-            padding-bottom: 0; // Remove default padding
-        }
-
-        .login-button {
-            width: 100%;
-            height: 3.5rem; // h-14
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 0.5rem; // rounded-lg
-            margin-top: 1rem;
-            background-color: $primary;
-            color: white;
-
-            &:hover {
-                background-color: darken($primary, 10%);
-            }
-        }
-    }
-
-    mat-card-footer {
-        margin-top: 2rem;
-        padding: 0; // Override default
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            text-align: center;
-        }
-
-        .divider {
-            position: relative;
-            text-align: center;
-
-            &::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 0;
-                right: 0;
-                height: 1px;
-                background-color: #e2e8f0; // slate-200
-                z-index: 0;
-            }
-
-            span {
-                position: relative;
-                z-index: 1;
-                background-color: white;
-                padding: 0 0.5rem;
-                color: #64748b; // slate-500
-                font-size: 0.75rem; // text-xs
-                text-transform: uppercase;
-            }
-        }
-
-        .social-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-        }
-
-        .social-btn {
-            height: 3rem; // h-12
-            border-color: #cbd5e1; // slate-300
-
-            ::ng-deep .mat-button-wrapper {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-            }
-
-            .social-icon {
-                width: 1.25rem; // size-5
-                height: 1.25rem;
-            }
-
-            .social-icon-font {
-                font-size: 1.25rem;
-                color: $text-secondary;
-            }
-        }
-
-        .signup-text {
-            font-size: 0.875rem; // text-sm
-            color: $text-secondary;
-
-            a {
-                color: $primary;
-                font-weight: 700;
-                text-decoration: none;
-
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
-    }
-}
-
-// Dark mode overrides (assuming a parent class 'dark' or angular material theme)
-:host-context(.dark-theme) {
-    .login-card {
-        background: $background-dark;
-        border-color: #1e293b;
-
-        mat-card-title {
-            color: white;
-        }
-
-        mat-card-subtitle {
-            color: #94a3b8;
-        }
-
-        .custom-label {
-            color: #e2e8f0;
-        }
-
-        .divider {
-            &::before {
-                background-color: #1e293b;
-            }
-
-            span {
-                background-color: $background-dark;
-                color: #94a3b8;
-            }
-        }
-
-        .social-btn {
-            border-color: #334155;
-            color: #cbd5e1 !important;
-
-            &:hover {
-                background-color: #1e293b;
-            }
-
-            .social-icon-font {
-                color: #cbd5e1;
-            }
-        }
-    }
-}
-
-
-<div class="path-container">
-    <!-- Top Navigation Bar -->
-    <header class="path-header">
-        <div class="header-content">
-            <div class="brand">
-                <div class="logo-box">
-                    <span class="material-symbols-outlined">description</span>
-                </div>
-                <h2 class="app-name">CV Suite</h2>
-            </div>
-            <div class="actions">
-                <nav class="nav-links">
-                    <a href="#">Dashboard</a>
-                    <a href="#">My CVs</a>
-                    <a href="#">Profile</a>
-                </nav>
-                <button mat-flat-button color="primary" class="sign-out-btn" (click)="signOut()">
-                    Sign Out
+                <button class="btn btn-icon">
+                    <span class="material-symbols-outlined">print</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="path-main">
-        <div class="content-wrapper">
-            <!-- Headline Section -->
-            <div class="headline-section">
-                <h1>Choose Your Path</h1>
-                <p>Select the tool that best fits your current needs to build your professional future.</p>
+    <!-- Main Resume Page Content -->
+    <main class="resume-paper">
+        <!-- Profile Header -->
+        <section class="profile-header">
+            <div class="profile-info">
+                <h1>Alex Rivera</h1>
+                <h2>Senior Full Stack Engineer</h2>
+                <div class="contact-details">
+                    <span><span class="material-symbols-outlined icon-small">location_on</span> San Francisco, CA</span>
+                    <span><span class="material-symbols-outlined icon-small">mail</span> alex.rivera@email.com</span>
+                    <span><span class="material-symbols-outlined icon-small">phone</span> +1 (555) 000-0000</span>
+                </div>
             </div>
-
-            <!-- Selection Cards Grid -->
-            <div class="cards-grid">
-                <!-- CV Authoring Tool Card -->
-                <mat-card class="tool-card group" (click)="startAuthoring()">
-                    <mat-card-content>
-                        <div class="icon-circle">
-                            <span class="material-symbols-outlined large-icon">edit_note</span>
-                        </div>
-                        <h3>CV Authoring Tool</h3>
-                        <p>
-                            Create a professional, ATS-friendly CV in just 4 simple steps. Perfect for starting from
-                            scratch
-                            or refreshing your current profile with our guided builder.
-                        </p>
-                        <button mat-flat-button color="primary" class="action-btn">
-                            Get Started
-                            <mat-icon>arrow_forward</mat-icon>
-                        </button>
-                    </mat-card-content>
-                </mat-card>
-
-                <!-- Job Matcher Tool Card -->
-                <mat-card class="tool-card group" (click)="startJobMatching()">
-                    <mat-card-content>
-                        <div class="icon-circle">
-                            <span class="material-symbols-outlined large-icon">psychology</span>
-                        </div>
-                        <h3>Job Matcher Tool</h3>
-                        <p>
-                            Upload your existing CV and a job description to see how well you match and get AI-powered
-                            suggestions for specific improvements to land the interview.
-                        </p>
-                        <button mat-flat-button color="primary" class="action-btn">
-                            Get Started
-                            <mat-icon>arrow_forward</mat-icon>
-                        </button>
-                    </mat-card-content>
-                </mat-card>
+            <div class="profile-photo-container">
+                <div class="profile-photo"
+                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCX4a7DUURX5rQLimk1lDugjX_04wpfLQRcQjSINFTTv4e0pg91QqFHIhXmbhxqe1OKxz8C3c3DJfprEyAMWqbUInBHMI1TZO8a4MsZ2nE9iQCCHQbXWCeLkeBWW6vtZ3wpa6QnHAMNwBjfD7GiDnS9Wsb8H0JLUn0driIJhQsHVqHGfuZCDs1v8bApGvox8t5ia31hUKdJrtzsjKph2ZGZUDXTAaJfYkyafoCyExhIiSuAkyFQzzH6kTfc3w2bMH3jcZBqvgLrXfA");'>
+                </div>
             </div>
+        </section>
 
-            <!-- Additional Context / Image Placeholder -->
-            <div class="image-placeholder"></div>
+        <!-- Actions / Links Bar -->
+        <div class="links-bar">
+            <a href="#" class="link-tag">
+                <span class="material-symbols-outlined">language</span> portfolio.dev
+            </a>
+            <a href="#" class="link-tag">
+                <span class="material-symbols-outlined">terminal</span> github.com/arivera
+            </a>
+            <a href="#" class="link-tag">
+                <span class="material-symbols-outlined">group</span> linkedin.com/in/arivera
+            </a>
         </div>
+
+        <!-- Executive Summary -->
+        <section class="section-block">
+            <h3>Executive Summary</h3>
+            <p>
+                Innovative Full Stack Engineer with 8+ years of experience specializing in <strong>scalable distributed
+                    systems</strong> and <strong>cloud architecture</strong>. Proven track record of leading
+                cross-functional teams to deliver high-performance React and Node.js applications that serve millions of
+                users monthly.
+            </p>
+        </section>
+
+        <!-- Professional Experience -->
+        <section class="section-block">
+            <h3>Professional Experience</h3>
+            <div class="experience-list">
+                <!-- Job 1 -->
+                <div class="job-item">
+                    <div class="job-header">
+                        <h4>Senior Software Engineer <span>@ TechFlow Solutions</span></h4>
+                        <span class="job-date">JAN 2021 — PRESENT</span>
+                    </div>
+                    <ul>
+                        <li>Architected and migrated legacy monolith to <strong>AWS Microservices (Lambda, SQS,
+                                RDS)</strong> reducing operational costs by 35% and improving uptime to 99.99%.</li>
+                        <li>Led a team of 6 engineers to build a real-time analytics dashboard using <strong>React,
+                                TypeScript, and GraphQL</strong>, processing over 50k events per second.</li>
+                        <li>Implemented <strong>CI/CD pipelines using GitHub Actions</strong> and Docker, decreasing
+                            deployment cycle time from 2 days to 15 minutes.</li>
+                        <li>Mentored junior developers and established coding standards, resulting in a 40% reduction in
+                            code review turnaround time.</li>
+                    </ul>
+                </div>
+                <!-- Job 2 -->
+                <div class="job-item">
+                    <div class="job-header">
+                        <h4>Full Stack Developer <span>@ Nova Innovations</span></h4>
+                        <span class="job-date">JUL 2017 — DEC 2020</span>
+                    </div>
+                    <ul>
+                        <li>Developed a high-traffic e-commerce platform using <strong>Next.js and Node.js</strong>,
+                            supporting over 1M monthly active users.</li>
+                        <li>Optimized database performance by redesigning schema and implementing <strong>Redis
+                                caching</strong>, reducing API latency by 60%.</li>
+                        <li>Collaborated with UX designers to build a reusable UI component library with
+                            <strong>Tailwind CSS</strong>, increasing frontend development velocity by 25%.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Projects -->
+        <section class="section-block">
+            <h3>Technical Projects</h3>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>OpenAuth 2.0</h4>
+                        <a href="#"><span class="material-symbols-outlined">link</span></a>
+                    </div>
+                    <p>A lightweight, open-source OAuth server built for Node.js environments. Supports OIDC and RBAC.
+                    </p>
+                    <div class="tags">
+                        <span>Go</span>
+                        <span>PostgreSQL</span>
+                        <span>Docker</span>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h4>GridFlow Engine</h4>
+                        <a href="#"><span class="material-symbols-outlined">link</span></a>
+                    </div>
+                    <p>High-performance canvas-based workflow engine for visual data mapping. 1.2k Stars on GitHub.</p>
+                    <div class="tags">
+                        <span>TypeScript</span>
+                        <span>WebGL</span>
+                        <span>React</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Core Competencies -->
+        <section class="section-block">
+            <h3>Core Competencies</h3>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <p class="category-title">Languages</p>
+                    <div class="tags">
+                        <span>TypeScript</span>
+                        <span>Go</span>
+                        <span>Python</span>
+                        <span>Rust</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <p class="category-title">Frontend/Backend</p>
+                    <div class="tags">
+                        <span>React</span>
+                        <span>Next.js</span>
+                        <span>Node.js</span>
+                        <span>GraphQL</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <p class="category-title">Infrastructure</p>
+                    <div class="tags">
+                        <span>AWS</span>
+                        <span>Docker</span>
+                        <span>Kubernetes</span>
+                        <span>Terraform</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section class="section-block">
+            <h3>Education</h3>
+            <div class="education-item">
+                <div>
+                    <h4>B.S. in Computer Science</h4>
+                    <p class="sub-text">University of California, Berkeley</p>
+                </div>
+                <span class="education-date">Class of 2017</span>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="path-footer">
-        <div class="footer-content">
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Support</a>
-                <a href="#">API Documentation</a>
-            </div>
-            <div class="copyright">
-                <span class="material-symbols-outlined copyright-icon">copyright</span>
-                <p>2024 CV Suite Authoring. All rights reserved.</p>
-            </div>
-        </div>
+    <footer class="footer no-print">
+        <p>Built with Inter and Standard CSS. Designed for high-end technical recruitment.</p>
     </footer>
 </div>
 
+/* Google Fonts Import at the top is recommended, but usually done in global styles. 
+   Assuming Inter and Material Symbols are loaded in index.html as per original file. */
 
-@use '@angular/material' as mat;
-
-$primary: #135bec;
-$background-light: #f6f6f8;
-$background-dark: #101622;
-$text-primary: #111318;
-$text-secondary: #4b5563; // gray-600
-$text-muted: #9ca3af; // gray-400
-
-.path-container {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    background-color: $background-light;
-    font-family: 'Inter', sans-serif;
+:host {
+  font-family: 'Inter', sans-serif;
+  color: #1e293b; /* slate-800 */
+  display: block;
+  background-color: #f6f7f8; /* background-light */
+  min-height: 100vh;
 }
 
-.path-header {
-    width: 100%;
+.resume-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Colors Variables */
+:root {
+  --primary-color: #197fe6;
+  --bg-light: #f6f7f8;
+  --bg-dark: #111921;
+  --text-dark: #0f172a; /* slate-900 */
+  --text-slate: #475569; /* slate-600 */
+  --text-light: #94a3b8; /* slate-400 */
+  --border-color: #e2e8f0; /* slate-200 */
+}
+
+/* Header */
+.top-nav {
+  width: 100%;
+  background-color: white;
+  border-bottom: 1px solid var(--border-color, #e2e8f0);
+  padding: 0.75rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #197fe6; /* primary */
+}
+
+.logo-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.logo-section h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.menu-links {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .menu-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-right: 1.5rem;
+  }
+}
+
+.menu-links a {
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  transition: color 0.2s;
+}
+
+.menu-links a:hover {
+  color: #197fe6;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  height: 2.5rem;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background-color: #197fe6;
+  color: white;
+  padding: 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  width: 2.5rem;
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+/* Main Paper */
+.resume-paper {
+  width: 100%;
+  max-width: 850px;
+  background-color: white;
+  margin: 2rem 0;
+  padding: 3rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  min-height: 1100px;
+}
+
+@media print {
+  .no-print { display: none !important; }
+  .resume-paper {
+    margin: 0;
+    padding: 2rem;
+    box-shadow: none;
+  }
+  :host {
     background-color: white;
-    border-bottom: 1px solid #e5e7eb; // gray-200
-    position: sticky;
-    top: 0;
-    z-index: 50;
-
-    .header-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        height: 4rem; // 16
-        padding: 0 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: $primary;
-
-            .logo-box {
-                width: 2rem;
-                height: 2rem;
-                background-color: $primary;
-                border-radius: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-            }
-
-            .app-name {
-                color: $text-primary;
-                font-size: 1.25rem;
-                font-weight: 700;
-                letter-spacing: -0.025em;
-                margin: 0;
-            }
-        }
-
-        .actions {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-
-            .nav-links {
-                display: none;
-
-                @media (min-width: 768px) {
-                    display: flex;
-                    align-items: center;
-                    gap: 1.5rem;
-                }
-
-                a {
-                    color: $text-secondary;
-                    font-size: 0.875rem;
-                    font-weight: 500;
-                    text-decoration: none;
-                    transition: color 0.2s;
-
-                    &:hover {
-                        color: $primary;
-                    }
-                }
-            }
-
-            .sign-out-btn {
-                height: 2.5rem;
-                font-weight: 700;
-                border-radius: 0.5rem;
-            }
-        }
-    }
+  }
 }
 
-.path-main {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+/* Sections */
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+.section-block {
+  margin-bottom: 2.5rem;
+}
+
+/* Profile Header */
+.profile-header {
+  margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .profile-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.profile-info h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #197fe6;
+  margin: 0 0 1rem 0;
+  letter-spacing: 0.025em;
+}
+
+.contact-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+.contact-details span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.icon-small {
+  font-size: 1.2rem; /* scale-75 rough equiv */
+  color: #197fe6;
+}
+
+.profile-photo {
+  width: 6rem;
+  height: 6rem;
+  border-radius: 0.75rem;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 2px solid #f1f5f9;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Links Bar */
+.links-bar {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.link-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  background-color: #f8fafc;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.link-tag:hover {
+  background-color: rgba(25, 127, 230, 0.1);
+  color: #197fe6;
+}
+
+.link-tag .material-symbols-outlined {
+  font-size: 1.25rem;
+  color: #197fe6;
+}
+
+/* Experience */
+.experience-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.job-item {
+  padding-left: 1rem;
+  border-left: 2px solid transparent;
+}
+/* First job specific border color in original was primary/20, others slate-200. Clean CSS solution: */
+.job-item:first-child {
+  border-left-color: rgba(25, 127, 230, 0.2);
+}
+.job-item:not(:first-child) {
+  border-left-color: #e2e8f0;
+}
+
+.job-header {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .job-header {
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    padding: 3rem 1.5rem;
-
-    .content-wrapper {
-        max-width: 960px;
-        width: 100%;
-    }
-
-    .headline-section {
-        text-align: center;
-        margin-bottom: 3rem;
-
-        h1 {
-            color: $text-primary;
-            font-size: 2.25rem; // 4xl
-            font-weight: 700;
-            letter-spacing: -0.025em;
-            margin-bottom: 1rem;
-
-            @media (min-width: 768px) {
-                font-size: 3rem; // 5xl
-            }
-        }
-
-        p {
-            color: $text-secondary;
-            font-size: 1.125rem; // lg
-            max-width: 42rem;
-            margin: 0 auto;
-        }
-    }
-
-    .cards-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 2rem;
-
-        @media (min-width: 768px) {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .tool-card {
-            padding: 2rem;
-            border-radius: 0.75rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
-            // Default shadow for mat-card is fine, but we can customize or enhance
-            box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
-
-            &:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
-            }
-
-            // Inside styles
-            mat-card-content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                height: 100%;
-            }
-
-            .icon-circle {
-                width: 5rem;
-                height: 5rem;
-                background-color: rgba($primary, 0.1);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: $primary;
-                margin-bottom: 1.5rem;
-
-                .large-icon {
-                    font-size: 2.5rem !important;
-                    width: 2.5rem;
-                    height: 2.5rem;
-                }
-            }
-
-            h3 {
-                color: $text-primary;
-                font-size: 1.5rem; // 2xl
-                font-weight: 700;
-                margin-bottom: 1rem;
-            }
-
-            p {
-                color: $text-secondary;
-                font-size: 1rem;
-                line-height: 1.625;
-                margin-bottom: 2rem;
-                flex-grow: 1;
-            }
-
-            .action-btn {
-                width: 100%;
-                padding: 1.5rem 0; // Taller button
-                border-radius: 0.5rem;
-                font-size: 1rem;
-                font-weight: 700;
-
-                ::ng-deep .mat-button-wrapper {
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 0.5rem;
-                }
-            }
-        }
-    }
-
-    .image-placeholder {
-        margin-top: 4rem;
-        display: flex;
-        justify-content: center;
-        width: 100%;
-        height: 12rem;
-        background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB2RzJPkEqCehWrAR6FwiPqinVTmr8BUh1mlkyEBL1_xoJc1F4SY10KvA1sGz5yzwVG7keJquRC6qmuO3ccb0M2PG-mXGqlYuxTH6_xeIWRYpj4kM3JDK9zLt0HsGPRMrpC4IDe5amPuplMLJ5CXFja6XvUibvags2nrl5Cbf_CdC1NvJvBkywH8AxqwrFvqde_E8_XzqY-otMJaSiM5Oq2Z1uSorH7va8rmnt5qYzqYJgb-8qINC0YFetjLayIV7xU2rU_WhJYGBg');
-        background-size: cover;
-        background-position: center;
-        border-radius: 0.75rem;
-        opacity: 0.1;
-    }
+  }
 }
 
-.path-footer {
-    width: 100%;
-    background-color: white;
-    border-top: 1px solid #e5e7eb;
-    margin-top: auto;
-
-    .footer-content {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 2.5rem 1.5rem;
-        text-align: center;
-    }
-
-    .footer-links {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 2rem;
-        margin-bottom: 1.5rem;
-
-        a {
-            color: $text-secondary;
-            font-size: 0.875rem;
-            text-decoration: none;
-            transition: color 0.2s;
-
-            &:hover {
-                color: $primary;
-            }
-        }
-    }
-
-    .copyright {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
-        color: $text-muted;
-        font-size: 0.875rem;
-
-        .copyright-icon {
-            font-size: 1.125rem;
-        }
-    }
+.job-header h4 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
 }
 
-// Dark Mode
-:host-context(.dark-theme) {
-    .path-container {
-        background-color: $background-dark;
-    }
-
-    .path-header {
-        background-color: $background-dark;
-        border-color: #1f2937; // gray-800
-
-        .header-content {
-            .brand .app-name {
-                color: white;
-            }
-
-            .actions .nav-links a {
-                color: #d1d5db; // gray-300
-
-                &:hover {
-                    color: $primary;
-                }
-            }
-        }
-    }
-
-    .path-main {
-        .headline-section {
-            h1 {
-                color: white;
-            }
-
-            p {
-                color: #9ca3af;
-            }
-        }
-
-        .cards-grid .tool-card {
-            background-color: #1f2937; // gray-800
-
-            .icon-circle {
-                background-color: rgba($primary, 0.2);
-            }
-
-            h3 {
-                color: white;
-            }
-
-            p {
-                color: #9ca3af;
-            }
-        }
-    }
-
-    .path-footer {
-        background-color: $background-dark;
-        border-color: #1f2937;
-
-        .footer-links a {
-            color: #9ca3af;
-
-            &:hover {
-                color: $primary;
-            }
-        }
-    }
+.job-header h4 span {
+  font-weight: 500;
+  font-size: 1rem;
+  color: #197fe6;
+  margin-left: 0.25rem;
 }
 
-
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-@Component({
-    selector: 'app-path',
-    templateUrl: './path.component.html',
-    styleUrls: ['./path.component.scss']
-})
-export class PathComponent {
-
-    constructor(private router: Router) { }
-
-    startAuthoring() {
-        this.router.navigate(['/step-1']);
-    }
-
-    startJobMatching() {
-        // Placeholder for future route
-        console.log('Navigating to Job Matcher');
-    }
-
-    signOut() {
-        this.router.navigate(['/login']);
-    }
+.job-date {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
 }
+
+.job-item ul {
+  list-style-type: disc;
+  margin: 0;
+  padding-left: 1rem;
+  color: #475569;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.job-item li {
+  margin-bottom: 0.5rem;
+}
+
+.job-item strong {
+  font-weight: 500;
+  color: #1e293b;
+}
+
+/* Projects */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.project-card {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid #f1f5f9;
+  background-color: rgba(248, 250, 252, 0.5);
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.project-header h4 {
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.project-header a {
+  color: #197fe6;
+  text-decoration: none;
+}
+
+.project-card p {
+  font-size: 0.75rem;
+  color: #475569;
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.tags span {
+  padding: 0.125rem 0.5rem;
+  background-color: white;
+  font-size: 0.625rem; /* 10px */
+  font-weight: 700;
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  color: #334155;
+}
+
+/* Skills */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .skills-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.category-title {
+  font-size: 0.625rem;
+  font-weight: 800;
+  color: #197fe6;
+  text-transform: uppercase;
+  margin: 0 0 0.75rem 0;
+  letter-spacing: 0.1em;
+}
+
+.skill-category .tags span {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background-color: #f1f5f9;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  color: #334155;
+  box-shadow: none;
+  border: none;
+}
+
+/* Education */
+.education-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.education-item h4 {
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.sub-text {
+  font-size: 0.875rem;
+  color: #475569;
+  margin: 0;
+}
+
+.education-date {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+/* Footer */
+.footer {
+  width: 100%;
+  max-width: 850px;
+  text-align: center;
+  margin-bottom: 3rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
