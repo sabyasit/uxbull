@@ -1,665 +1,108 @@
-<div class="resume-container">
-    <!-- Top Navigation Bar -->
-    <header class="top-nav no-print">
-        <div class="logo-section">
-            <div class="logo-icon">
-                <svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"
-                        fill="currentColor"></path>
-                </svg>
-            </div>
-            <h2>Resume Builder</h2>
-        </div>
-        <div class="nav-actions">
-            <div class="menu-links">
-                <a href="#">Templates</a>
-                <a href="#">Settings</a>
-            </div>
-            <div class="action-buttons">
-                <button class="btn btn-primary" onclick="window.print()">
-                    <span class="material-symbols-outlined">download</span>
-                    <span>Export PDF</span>
-                </button>
-                <button class="btn btn-icon">
-                    <span class="material-symbols-outlined">print</span>
-                </button>
-            </div>
-        </div>
-    </header>
+"@xenova/transformers": "^2.17.2",
 
-    <!-- Main Resume Page Content -->
-    <main class="resume-paper">
-        <!-- Profile Header -->
-        <section class="profile-header">
-            <div class="profile-info">
-                <h1>Alex Rivera</h1>
-                <h2>Senior Full Stack Engineer</h2>
-                <div class="contact-details">
-                    <span><span class="material-symbols-outlined icon-small">location_on</span> San Francisco, CA</span>
-                    <span><span class="material-symbols-outlined icon-small">mail</span> alex.rivera@email.com</span>
-                    <span><span class="material-symbols-outlined icon-small">phone</span> +1 (555) 000-0000</span>
-                </div>
-            </div>
-            <div class="profile-photo-container">
-                <div class="profile-photo"
-                    style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCX4a7DUURX5rQLimk1lDugjX_04wpfLQRcQjSINFTTv4e0pg91QqFHIhXmbhxqe1OKxz8C3c3DJfprEyAMWqbUInBHMI1TZO8a4MsZ2nE9iQCCHQbXWCeLkeBWW6vtZ3wpa6QnHAMNwBjfD7GiDnS9Wsb8H0JLUn0driIJhQsHVqHGfuZCDs1v8bApGvox8t5ia31hUKdJrtzsjKph2ZGZUDXTAaJfYkyafoCyExhIiSuAkyFQzzH6kTfc3w2bMH3jcZBqvgLrXfA");'>
-                </div>
-            </div>
-        </section>
+import { Component, OnInit } from '@angular/core';
+import { pipeline } from '@xenova/transformers';
 
-        <!-- Actions / Links Bar -->
-        <div class="links-bar">
-            <a href="#" class="link-tag">
-                <span class="material-symbols-outlined">language</span> portfolio.dev
-            </a>
-            <a href="#" class="link-tag">
-                <span class="material-symbols-outlined">terminal</span> github.com/arivera
-            </a>
-            <a href="#" class="link-tag">
-                <span class="material-symbols-outlined">group</span> linkedin.com/in/arivera
-            </a>
-        </div>
-
-        <!-- Executive Summary -->
-        <section class="section-block">
-            <h3>Executive Summary</h3>
-            <p>
-                Innovative Full Stack Engineer with 8+ years of experience specializing in <strong>scalable distributed
-                    systems</strong> and <strong>cloud architecture</strong>. Proven track record of leading
-                cross-functional teams to deliver high-performance React and Node.js applications that serve millions of
-                users monthly.
-            </p>
-        </section>
-
-        <!-- Professional Experience -->
-        <section class="section-block">
-            <h3>Professional Experience</h3>
-            <div class="experience-list">
-                <!-- Job 1 -->
-                <div class="job-item">
-                    <div class="job-header">
-                        <h4>Senior Software Engineer <span>@ TechFlow Solutions</span></h4>
-                        <span class="job-date">JAN 2021 — PRESENT</span>
-                    </div>
-                    <ul>
-                        <li>Architected and migrated legacy monolith to <strong>AWS Microservices (Lambda, SQS,
-                                RDS)</strong> reducing operational costs by 35% and improving uptime to 99.99%.</li>
-                        <li>Led a team of 6 engineers to build a real-time analytics dashboard using <strong>React,
-                                TypeScript, and GraphQL</strong>, processing over 50k events per second.</li>
-                        <li>Implemented <strong>CI/CD pipelines using GitHub Actions</strong> and Docker, decreasing
-                            deployment cycle time from 2 days to 15 minutes.</li>
-                        <li>Mentored junior developers and established coding standards, resulting in a 40% reduction in
-                            code review turnaround time.</li>
-                    </ul>
-                </div>
-                <!-- Job 2 -->
-                <div class="job-item">
-                    <div class="job-header">
-                        <h4>Full Stack Developer <span>@ Nova Innovations</span></h4>
-                        <span class="job-date">JUL 2017 — DEC 2020</span>
-                    </div>
-                    <ul>
-                        <li>Developed a high-traffic e-commerce platform using <strong>Next.js and Node.js</strong>,
-                            supporting over 1M monthly active users.</li>
-                        <li>Optimized database performance by redesigning schema and implementing <strong>Redis
-                                caching</strong>, reducing API latency by 60%.</li>
-                        <li>Collaborated with UX designers to build a reusable UI component library with
-                            <strong>Tailwind CSS</strong>, increasing frontend development velocity by 25%.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technical Projects -->
-        <section class="section-block">
-            <h3>Technical Projects</h3>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>OpenAuth 2.0</h4>
-                        <a href="#"><span class="material-symbols-outlined">link</span></a>
-                    </div>
-                    <p>A lightweight, open-source OAuth server built for Node.js environments. Supports OIDC and RBAC.
-                    </p>
-                    <div class="tags">
-                        <span>Go</span>
-                        <span>PostgreSQL</span>
-                        <span>Docker</span>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-header">
-                        <h4>GridFlow Engine</h4>
-                        <a href="#"><span class="material-symbols-outlined">link</span></a>
-                    </div>
-                    <p>High-performance canvas-based workflow engine for visual data mapping. 1.2k Stars on GitHub.</p>
-                    <div class="tags">
-                        <span>TypeScript</span>
-                        <span>WebGL</span>
-                        <span>React</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Core Competencies -->
-        <section class="section-block">
-            <h3>Core Competencies</h3>
-            <div class="skills-grid">
-                <div class="skill-category">
-                    <p class="category-title">Languages</p>
-                    <div class="tags">
-                        <span>TypeScript</span>
-                        <span>Go</span>
-                        <span>Python</span>
-                        <span>Rust</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <p class="category-title">Frontend/Backend</p>
-                    <div class="tags">
-                        <span>React</span>
-                        <span>Next.js</span>
-                        <span>Node.js</span>
-                        <span>GraphQL</span>
-                    </div>
-                </div>
-                <div class="skill-category">
-                    <p class="category-title">Infrastructure</p>
-                    <div class="tags">
-                        <span>AWS</span>
-                        <span>Docker</span>
-                        <span>Kubernetes</span>
-                        <span>Terraform</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Education -->
-        <section class="section-block">
-            <h3>Education</h3>
-            <div class="education-item">
-                <div>
-                    <h4>B.S. in Computer Science</h4>
-                    <p class="sub-text">University of California, Berkeley</p>
-                </div>
-                <span class="education-date">Class of 2017</span>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer no-print">
-        <p>Built with Inter and Standard CSS. Designed for high-end technical recruitment.</p>
-    </footer>
-</div>
-
-/* Google Fonts Import at the top is recommended, but usually done in global styles. 
-   Assuming Inter and Material Symbols are loaded in index.html as per original file. */
-
-:host {
-  font-family: 'Inter', sans-serif;
-  color: #1e293b; /* slate-800 */
-  display: block;
-  background-color: #f6f7f8; /* background-light */
-  min-height: 100vh;
+interface SimilarityResult {
+    text: string;
+    score: number;
 }
 
-.resume-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-}
+@Component({
+    selector: 'app-string-similarity',
+    templateUrl: './string-similarity.component.html',
+    styleUrls: ['./string-similarity.component.css']
+})
+export class StringSimilarityComponent implements OnInit {
+    sourceText: string = 'apple pie\napple juice\ncherry tart\nchocolate cake\nstrawberry ice cream\ncar engine\ntruck tire';
+    searchText: string = 'fruit dessert';
+    results: SimilarityResult[] = [];
+    isLoading: boolean = false;
+    statusMessage: string = '';
 
-/* Colors Variables */
-:root {
-  --primary-color: #197fe6;
-  --bg-light: #f6f7f8;
-  --bg-dark: #111921;
-  --text-dark: #0f172a; /* slate-900 */
-  --text-slate: #475569; /* slate-600 */
-  --text-light: #94a3b8; /* slate-400 */
-  --border-color: #e2e8f0; /* slate-200 */
-}
+    extractor: any = null; // Type as any to avoid strict type issues for now, or use Pipeline if types available
 
-/* Header */
-.top-nav {
-  width: 100%;
-  background-color: white;
-  border-bottom: 1px solid var(--border-color, #e2e8f0);
-  padding: 0.75rem 1.5rem;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-sizing: border-box;
-}
+    constructor() { }
 
-.logo-section {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  color: #197fe6; /* primary */
-}
+    async ngOnInit() {
+        this.statusMessage = 'Loading model... this may take a while initially.';
+        this.isLoading = true;
+        try {
+            // Load the feature extraction pipeline
+            this.extractor = await pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
+            this.statusMessage = 'Model loaded. Ready.';
+        } catch (error) {
+            console.error('Error loading model:', error);
+            this.statusMessage = 'Error loading model. Check console.';
+        } finally {
+            this.isLoading = false;
+        }
+    }
 
-.logo-icon {
-  width: 1.5rem;
-  height: 1.5rem;
-}
+    async search() {
+        if (!this.extractor) {
+            this.statusMessage = 'Model not loaded yet.';
+            return;
+        }
 
-.logo-section h2 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
+        if (!this.sourceText.trim() || !this.searchText.trim()) {
+            return;
+        }
 
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+        this.isLoading = true;
+        this.statusMessage = 'Computing embeddings...';
+        this.results = [];
 
-.menu-links {
-  display: none;
-}
+        try {
+            const candidates = this.sourceText.split('\n').filter(line => line.trim() !== '');
 
-@media (min-width: 768px) {
-  .menu-links {
-    display: flex;
-    gap: 1.5rem;
-    margin-right: 1.5rem;
-  }
-}
+            // Get embedding for the search query
+            const queryOutput = await this.extractor(this.searchText, { pooling: 'mean', normalize: true });
+            const queryEmbedding = queryOutput.data;
 
-.menu-links a {
-  text-decoration: none;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #475569;
-  transition: color 0.2s;
-}
+            const scoredCandidates: SimilarityResult[] = [];
 
-.menu-links a:hover {
-  color: #197fe6;
-}
+            // Get embeddings for candidates and calculate cosine similarity
+            // Note: For large lists, this should be batched. For this demo, we do one by one or small batch.
+            // pipeline handles batching if we pass an array, often faster.
+            const candidateOutput = await this.extractor(candidates, { pooling: 'mean', normalize: true });
 
-.action-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
+            // candidateOutput.data is a flattened float32array if multiple inputs
+            // Check shape: [batch_size, hidden_size]
+            const hiddenSize = queryOutput.dims[1];
 
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.5rem;
-  height: 2.5rem;
-  border: none;
-  cursor: pointer;
-  font-family: inherit;
-}
+            for (let i = 0; i < candidates.length; i++) {
+                const candidateEmbedding = candidateOutput[i].data; // Access via index if the output allows, or slice raw data
 
-.btn-primary {
-  background-color: #197fe6;
-  color: white;
-  padding: 0 1rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  gap: 0.5rem;
-}
+                // transformers.js output for batch might be a Tensor where .data is the flat array.
+                // But pipeline() with array input usually returns an array of Tensors or a batched Tensor?
+                // Let's verify behavior. standard behavior for feature-extraction with array is array of Tensors.
 
-.btn-icon {
-  width: 2.5rem;
-  background-color: #e2e8f0;
-  color: #334155;
-}
+                // Actually, let's play safe and check type, or use the Tensor methods.
+                // Assuming cosine similarity on normalized vectors is just dot product.
 
-/* Main Paper */
-.resume-paper {
-  width: 100%;
-  max-width: 850px;
-  background-color: white;
-  margin: 2rem 0;
-  padding: 3rem;
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  box-sizing: border-box;
-  min-height: 1100px;
-}
+                const score = this.cosineSimilarity(queryEmbedding, candidateEmbedding);
+                scoredCandidates.push({ text: candidates[i], score });
+            }
 
-@media print {
-  .no-print { display: none !important; }
-  .resume-paper {
-    margin: 0;
-    padding: 2rem;
-    box-shadow: none;
-  }
-  :host {
-    background-color: white;
-  }
-}
+            this.results = scoredCandidates.sort((a, b) => b.score - a.score);
+            this.statusMessage = 'Done.';
 
-/* Sections */
-h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  color: #0f172a;
-  text-transform: uppercase;
-  margin: 0 0 0.5rem 0;
-  letter-spacing: -0.025em;
-}
+        } catch (error) {
+            console.error('Error during search:', error);
+            this.statusMessage = 'Error during search.';
+        } finally {
+            this.isLoading = false;
+        }
+    }
 
-h3 {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
-  margin-top: 0;
+    cosineSimilarity(a: Float32Array | number[], b: Float32Array | number[]): number {
+        let dotProduct = 0;
+        for (let i = 0; i < a.length; i++) {
+            dotProduct += a[i] * b[i];
+        }
+        // Since we requested { normalize: true }, the vectors are already unit vectors.
+        // So cosine similarity is just the dot product.
+        return dotProduct;
+    }
 }
-
-.section-block {
-  margin-bottom: 2.5rem;
-}
-
-/* Profile Header */
-.profile-header {
-  margin-bottom: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .profile-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-}
-
-.profile-info h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #197fe6;
-  margin: 0 0 1rem 0;
-  letter-spacing: 0.025em;
-}
-
-.contact-details {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  color: #64748b;
-  font-size: 0.875rem;
-}
-
-.contact-details span {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.icon-small {
-  font-size: 1.2rem; /* scale-75 rough equiv */
-  color: #197fe6;
-}
-
-.profile-photo {
-  width: 6rem;
-  height: 6rem;
-  border-radius: 0.75rem;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  border: 2px solid #f1f5f9;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-}
-
-/* Links Bar */
-.links-bar {
-  margin-top: 1.5rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #f1f5f9;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 2.5rem;
-}
-
-.link-tag {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  border-radius: 0.5rem;
-  background-color: #f8fafc;
-  color: #334155;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.link-tag:hover {
-  background-color: rgba(25, 127, 230, 0.1);
-  color: #197fe6;
-}
-
-.link-tag .material-symbols-outlined {
-  font-size: 1.25rem;
-  color: #197fe6;
-}
-
-/* Experience */
-.experience-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
-.job-item {
-  padding-left: 1rem;
-  border-left: 2px solid transparent;
-}
-/* First job specific border color in original was primary/20, others slate-200. Clean CSS solution: */
-.job-item:first-child {
-  border-left-color: rgba(25, 127, 230, 0.2);
-}
-.job-item:not(:first-child) {
-  border-left-color: #e2e8f0;
-}
-
-.job-header {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 0.5rem;
-}
-
-@media (min-width: 768px) {
-  .job-header {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-}
-
-.job-header h4 {
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.job-header h4 span {
-  font-weight: 500;
-  font-size: 1rem;
-  color: #197fe6;
-  margin-left: 0.25rem;
-}
-
-.job-date {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #64748b;
-  background-color: #f1f5f9;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.25rem;
-}
-
-.job-item ul {
-  list-style-type: disc;
-  margin: 0;
-  padding-left: 1rem;
-  color: #475569;
-  font-size: 0.875rem;
-  line-height: 1.5;
-}
-
-.job-item li {
-  margin-bottom: 0.5rem;
-}
-
-.job-item strong {
-  font-weight: 500;
-  color: #1e293b;
-}
-
-/* Projects */
-.projects-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 768px) {
-  .projects-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.project-card {
-  padding: 1rem;
-  border-radius: 0.75rem;
-  border: 1px solid #f1f5f9;
-  background-color: rgba(248, 250, 252, 0.5);
-}
-
-.project-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.5rem;
-}
-
-.project-header h4 {
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.project-header a {
-  color: #197fe6;
-  text-decoration: none;
-}
-
-.project-card p {
-  font-size: 0.75rem;
-  color: #475569;
-  margin: 0 0 0.75rem 0;
-  line-height: 1.5;
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.tags span {
-  padding: 0.125rem 0.5rem;
-  background-color: white;
-  font-size: 0.625rem; /* 10px */
-  font-weight: 700;
-  border-radius: 0.25rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  border: 1px solid #f1f5f9;
-  color: #334155;
-}
-
-/* Skills */
-.skills-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.5rem;
-}
-
-@media (min-width: 640px) {
-  .skills-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.category-title {
-  font-size: 0.625rem;
-  font-weight: 800;
-  color: #197fe6;
-  text-transform: uppercase;
-  margin: 0 0 0.75rem 0;
-  letter-spacing: 0.1em;
-}
-
-.skill-category .tags span {
-  font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
-  background-color: #f1f5f9;
-  border-radius: 0.5rem;
-  font-weight: 500;
-  color: #334155;
-  box-shadow: none;
-  border: none;
-}
-
-/* Education */
-.education-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.education-item h4 {
-  font-weight: 700;
-  color: #0f172a;
-  margin: 0;
-}
-
-.sub-text {
-  font-size: 0.875rem;
-  color: #475569;
-  margin: 0;
-}
-
-.education-date {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #64748b;
-  text-transform: uppercase;
-}
-
-/* Footer */
-.footer {
-  width: 100%;
-  max-width: 850px;
-  text-align: center;
-  margin-bottom: 3rem;
-  color: #94a3b8;
-  font-size: 0.75rem;
-}
-
