@@ -1,3 +1,7 @@
+
+env.localModelPath = '/assets/models';
+env.allowRemoteModels = false;
+
 "@xenova/transformers": "^2.17.2",
 
 import { Component, OnInit } from '@angular/core';
@@ -106,3 +110,4 @@ export class StringSimilarityComponent implements OnInit {
         return dotProduct;
     }
 }
+
