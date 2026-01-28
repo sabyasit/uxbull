@@ -202,3 +202,152 @@ Resume Text:
 """
 {RESUME_TEXT_HERE}
 """
+
+
+import os
+from io import BytesIO
+from pypdf import PdfReader, PdfWriter
+from reportlab.pdfgen import canvas
+from reportlab.lib.utils import simpleSplit
+
+def create_content_page(page_width, page_height):
+    """
+    Creates a temporary PDF page with 3 paragraphs and bullet points using ReportLab.
+    Matches the dimensions of the existing PDF.
+    """
+    packet = BytesIO()
+    # Create a new PDF with Reportlab
+    can = canvas.Canvas(packet, pagesize=(page_width, page_height))
+    
+    # Margins and dimensions
+    margin = 50
+    text_width = page_width - 2 * margin
+    
+    # Starting Y position (from top margin)
+    start_y = page_height - 50
+    y_position = start_y
+    
+    # Title
+    can.setFont("Helvetica-Bold", 16)
+    can.drawString(margin, y_position, "Added Page with Bullet Points")
+    y_position -= 30
+    
+    paragraphs = [
+        {
+            "title": "1. Introduction to New Features",
+            "text": "This section introduces the new capabilities added to the system. The integration allows for seamless processing of documents even when the text is very long and needs to wrap to the next line to ensure readability and proper layout on the PDF page.",
+            "points": ["Enhanced performance across all modules", "Better reliability with improved error handling mechanisms", "Scalable architecture designed for future growth and high load scenarios Scalable architecture designed for future growth and high load scenarios Scalable architecture designed for future growth and high load scenarios"]
+        },
+        {
+            "title": "2. Implementation Details",
+            "text": "The implementation focuses on modularity and ease of maintenance. Developers can easily extend the functionality by adding new modules or plugins without affecting the core system. This ensures a robust and flexible codebase.",
+            "points": ["Python-based solution utilizing modern libraries", "Uses pypdf library for robust PDF manipulation and merging capabilities", "ReportLab for dynamic PDF generation and advanced text formatting features"]
+        },
+        {
+            "title": "3. Future Roadmap",
+            "text": "We plan to add more features in the upcoming release cycles to support a wider range of document formats including proprietary and open standards. The goal is to provide a comprehensive document processing solution.",
+            "points": ["Support for DOCX and other office formats", "Cloud integration with major providers like AWS, Azure, and GCP", "Real-time collaboration features allowing multiple users to edit documents simultaneously"]
+        }
+    ]
+    
+    for para in paragraphs:
+        # Title of the paragraph
+        can.setFont("Helvetica-Bold", 12)
+        can.drawString(margin, y_position, para["title"])
+        y_position -= 20
+        
+        # Paragraph text
+        can.setFont("Helvetica", 11)
+        # Use simpleSplit to wrap text that fits within the text_width
+        text_lines = simpleSplit(para["text"], "Helvetica", 11, text_width)
+        
+        for line in text_lines:
+            can.drawString(margin, y_position, line)
+            y_position -= 15
+            
+        y_position -= 5 # Small gap before bullets
+        
+        # Bullet points
+        for point in para["points"]:
+            # Draw bullet
+            can.drawString(margin + 20, y_position, "•")
+            
+            # Calculate available width for bullet text (margin + bullet indent + text indent)
+            bullet_text_width = text_width - 35 
+            point_lines = simpleSplit(point, "Helvetica", 11, bullet_text_width)
+            
+            for line in point_lines:
+                can.drawString(margin + 35, y_position, line)
+                y_position -= 15
+            
+        y_position -= 20  # Extra space between sections
+        
+        # Simple check for page break
+        if y_position < 50:
+            can.showPage()
+            y_position = start_y
+            can.setFont("Helvetica", 11)
+        
+    can.save()
+    packet.seek(0)
+    return packet
+
+def add_page_with_bullets(input_file_path: str, output_file_path: str = None):
+    """
+    Adds a new page with 3 paragraphs and bullet points to an existing PDF.
+    
+    Args:
+        input_file_path (str): Path to the source PDF.
+        output_file_path (str, optional): Path to save the result. If None, overwrites input.
+    """
+    if output_file_path is None:
+        output_file_path = input_file_path
+        
+    try:
+        # Read the existing PDF
+        reader = PdfReader(input_file_path)
+        writer = PdfWriter()
+        
+        # Get dimensions from the first page (assuming uniform size or just extracting from first)
+        if len(reader.pages) > 0:
+            first_page = reader.pages[0]
+            # pypdf pages have mediabox which is usually [0, 0, width, height]
+            page_width = float(first_page.mediabox.width)
+            page_height = float(first_page.mediabox.height)
+        else:
+            # Fallback if PDF is empty (unlikely but safe)
+            page_width, page_height = 612.0, 792.0 # Standard Letter size
+            
+        # Copy existing pages
+        for page in reader.pages:
+            writer.add_page(page)
+            
+        # Create and add the new page with dynamic dimensions
+        new_page_packet = create_content_page(page_width, page_height)
+        new_page_reader = PdfReader(new_page_packet)
+        # If create_content_page creates multiple pages (due to showPage), add all of them
+        for page in new_page_reader.pages:
+            writer.add_page(page)
+        
+        # Write the output
+        with open(output_file_path, "wb") as f_out:
+            writer.write(f_out)
+            
+        print(f"Successfully added a new page to: {output_file_path} (Size: {page_width}x{page_height})")
+        
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    # Example usage
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    input_pdf = os.path.join(current_dir, "1.pdf")
+    
+    # We output to a new file to preserve the original for repeated testing, 
+    # but the function supports overwriting.
+    output_pdf = os.path.join(current_dir, "1_updated.pdf")
+    
+    if os.path.exists(input_pdf):
+        add_page_with_bullets(input_pdf, output_pdf)
+    else:
+        print(f"File not found: {input_pdf}")
